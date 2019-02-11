@@ -16,13 +16,16 @@ namespace UnityStandardAssets.Characters.ThirdPerson
 		[SerializeField] float m_AnimSpeedMultiplier = 1f;
 		[SerializeField] float m_GroundCheckDistance = 0.1f;
 
-		Rigidbody m_Rigidbody;
+        [SerializeField] float m_CursorSensitivity = 1f;
+
+        Rigidbody m_Rigidbody;
 		Animator m_Animator;
 		bool m_IsGrounded;
 		float m_OrigGroundCheckDistance;
 		const float k_Half = 0.5f;
 		float m_TurnAmount;
 		float m_ForwardAmount;
+        float m_StrafeAmount;
 		Vector3 m_GroundNormal;
 		float m_CapsuleHeight;
 		Vector3 m_CapsuleCenter;
@@ -50,11 +53,16 @@ namespace UnityStandardAssets.Characters.ThirdPerson
 			// turn amount and forward amount required to head in the desired
 			// direction.
 			if (move.magnitude > 1f) move.Normalize();
+
+            m_Rigidbody.velocity = new Vector3(move.x * m_MoveSpeedMultiplier, m_Rigidbody.velocity.y, move.z * m_MoveSpeedMultiplier);
+
 			move = transform.InverseTransformDirection(move);
 			CheckGroundStatus();
 			move = Vector3.ProjectOnPlane(move, m_GroundNormal);
-			m_TurnAmount = Mathf.Atan2(move.x, move.z);
+            Debug.Log(Input.GetAxis("Mouse X"));
+			m_TurnAmount = Input.GetAxis("Mouse X") * m_CursorSensitivity;
 			m_ForwardAmount = move.z;
+            m_StrafeAmount = Input.GetAxis("Horizontal");
 
 			ApplyExtraTurnRotation();
 
@@ -120,11 +128,12 @@ namespace UnityStandardAssets.Characters.ThirdPerson
 			// update the animator parameters
 			m_Animator.SetFloat("Forward", m_ForwardAmount, 0.1f, Time.deltaTime);
 			m_Animator.SetFloat("Turn", m_TurnAmount, 0.1f, Time.deltaTime);
+            m_Animator.SetFloat("Strafe", m_StrafeAmount, 0.1f, Time.deltaTime);
 			m_Animator.SetBool("Crouch", m_Crouching);
 			m_Animator.SetBool("OnGround", m_IsGrounded);
 			if (!m_IsGrounded)
 			{
-				m_Animator.SetFloat("Jump", m_Rigidbody.velocity.y);
+				m_Animator.SetFloat("Jump", m_Rigidbody.velocity.  y);
 			}
 
 			// calculate which leg is behind, so as to leave that leg trailing in the jump animation

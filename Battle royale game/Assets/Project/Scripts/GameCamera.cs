@@ -8,6 +8,9 @@ public class GameCamera : MonoBehaviour
     [SerializeField] private GameObject rotationAnchorObject;
     [SerializeField] private Vector3 translationOffset;
     [SerializeField] private Vector3 followOffset;
+    [SerializeField] private float maxViewingAngle;
+    [SerializeField] private float minViewingAngle;
+    [SerializeField] private float rotationSensitivity;
 
     private float verticalRotationAngle;
     
@@ -33,7 +36,8 @@ public class GameCamera : MonoBehaviour
         transform.LookAt(target.transform.position + translationOffset);
 
         // Make the camera look up or down.
-        verticalRotationAngle += Input.GetAxis("Mouse Y");
+        verticalRotationAngle = Mathf.Clamp(verticalRotationAngle + Input.GetAxis("Mouse Y") * rotationSensitivity, minViewingAngle, maxViewingAngle);
+
         transform.RotateAround(rotationAnchorObject.transform.position, rotationAnchorObject.transform.right, -verticalRotationAngle);
     }
 }

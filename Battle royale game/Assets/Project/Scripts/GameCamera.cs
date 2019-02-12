@@ -5,6 +5,7 @@ using UnityEngine;
 public class GameCamera : MonoBehaviour
 {
     [SerializeField] private GameObject target;
+    [SerializeField] private GameObject rotationAnchorObject;
     [SerializeField] private Vector3 translationOffset;
     [SerializeField] private Vector3 followOffset;
 
@@ -33,6 +34,6 @@ public class GameCamera : MonoBehaviour
 
         // Make the camera look up or down.
         verticalRotationAngle += Input.GetAxis("Mouse Y");
-        transform.RotateAround(target.transform.position, target.transform.right, -verticalRotationAngle);
+        transform.RotateAround(rotationAnchorObject.transform.position, rotationAnchorObject.transform.right, -verticalRotationAngle);
     }
 }

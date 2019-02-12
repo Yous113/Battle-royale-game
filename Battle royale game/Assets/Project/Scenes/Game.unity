@@ -335,6 +335,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   focalPoint: {fileID: 38282609}
   focalDistance: 0.65
+  focalSmoothness: 7.5
   changeFocalSideKey: 113
 --- !u!1001 &967735544
 PrefabInstance:

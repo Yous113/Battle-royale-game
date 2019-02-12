@@ -7,6 +7,7 @@ public class Player : MonoBehaviour
     [Header("Focal Point variables")]
     [SerializeField] private GameObject focalPoint;
     [SerializeField] private float focalDistance;
+    [SerializeField] private float focalSmoothness;
     [SerializeField] private KeyCode changeFocalSideKey;
 
     private bool isFocalPointOnLeft = true;
@@ -26,6 +27,7 @@ public class Player : MonoBehaviour
         }
 
         float targetX = focalDistance * (isFocalPointOnLeft ? -1 : 1);
-        focalPoint.transform.localPosition = new Vector3(targetX, focalPoint.transform.localPosition.y, focalPoint.transform.localPosition.y);
+        float smoothX = Mathf.Lerp(focalPoint.transform.localPosition.x, targetX, focalSmoothness * Time.deltaTime);
+        focalPoint.transform.localPosition = new Vector3(smoothX, focalPoint.transform.localPosition.y, focalPoint.transform.localPosition.z);
     }
 }

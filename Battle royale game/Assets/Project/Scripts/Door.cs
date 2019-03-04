@@ -8,13 +8,7 @@ public class Door : MonoBehaviour
     [SerializeField] private float openingSpeed;
 
     private bool isOpen;
-    private float targetAngel;
-    
-    // Start is called before the first frame update
-    void Start()
-    {
-        Interact();
-    }
+    private float targetAngel;       
 
     // Update is called once per frame
     void Update()

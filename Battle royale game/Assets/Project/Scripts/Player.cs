@@ -6,9 +6,12 @@ public class Player : MonoBehaviour
 {
     public enum PlayerTool
     {
-        Pickaxe,      
-        None,
-        Grenade
+        Pickaxe,
+        ObstacleVertical,
+        ObstacleRamp,
+        ObstacleHorizontal,
+        None
+        
     }
 
     [Header("Focal Point variables")]
@@ -80,42 +83,73 @@ public class Player : MonoBehaviour
         // Tool switch logic
         if (Input.GetKeyDown(toolSwitchKey))
         {
-            //Cycle between the available tools.
-            int currentToolIndex = (int) tool;
-            currentToolIndex++;
+            SwitchTool();
 
-            if(currentToolIndex == System.Enum.GetNames(typeof(PlayerTool)).Length)
-            {
-                currentToolIndex = 0;
-            }
-            // Get the new Tool
-            tool = (PlayerTool)currentToolIndex;
-            hud.Tool = tool;
         }
 
        //Tool usage Logic.
 
         if(Input.GetAxis("Fire1") > 0)
         {
-            if (tool == PlayerTool.Pickaxe)
+            UseTool();
+            
+        }
+    }
+
+    private void SwitchTool()
+    {
+        PlayerTool previousTool = tool;
+
+        //Cycle between the available tools.
+        int currentToolIndex = (int)tool;
+        currentToolIndex++;
+
+        if (currentToolIndex == System.Enum.GetNames(typeof(PlayerTool)).Length)
+        {
+            currentToolIndex = 0;
+        }
+        // Get the new Tool
+        tool = (PlayerTool)currentToolIndex;
+        hud.Tool = tool;
+
+        // Check for obstacle placement logic
+        if (tool == PlayerTool.ObstacleVertical)
+        {
+           // Show an obstacle in placement mode.
+        }
+        else if(tool == PlayerTool.ObstacleRamp)
+        {
+
+        }
+        else if (tool == PlayerTool.ObstacleVertical)
+        {
+
+        }
+        else if (previousTool == PlayerTool.ObstacleHorizontal)
+        {
+           // Remove any obstacles in placement mode
+        }
+    }
+
+    private void UseTool()
+    {
+        if (tool == PlayerTool.Pickaxe)
+        {
+            RaycastHit hit;
+            if (Physics.Raycast(gameCamera.transform.position, gameCamera.transform.forward, out hit, interactionDistance))
             {
-                RaycastHit hit;
-                if (Physics.Raycast(gameCamera.transform.position, gameCamera.transform.forward, out hit, interactionDistance))
+                if (resourceCollectionCooldownTimer <= 0 && hit.transform.GetComponent<ResourceObject>() != null)
                 {
-                    if (resourceCollectionCooldownTimer <= 0 && hit.transform.GetComponent<ResourceObject>() != null)
-                    {
-                        resourceCollectionCooldownTimer = resourceCollectionCooldown;
+                    resourceCollectionCooldownTimer = resourceCollectionCooldown;
 
-                        ResourceObject resourceObject = hit.transform.GetComponent<ResourceObject>();
-                        Debug.Log("Hit the object");
-                        int collectedResources = resourceObject.Collect();
+                    ResourceObject resourceObject = hit.transform.GetComponent<ResourceObject>();
+                    Debug.Log("Hit the object");
+                    int collectedResources = resourceObject.Collect();
 
-                        resources += collectedResources;
-                        hud.Resources = resources;
-                    }
+                    resources += collectedResources;
+                    hud.Resources = resources;
                 }
             }
-            
         }
     }
 }

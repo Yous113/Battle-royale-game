@@ -5692,6 +5692,7 @@ MonoBehaviour:
   hud: {fileID: 1020867052}
   toolSwitchKey: 9
   tool: 0
+  resourceCollectionCooldown: 1
 --- !u!1001 &602549411
 PrefabInstance:
   m_ObjectHideFlags: 0

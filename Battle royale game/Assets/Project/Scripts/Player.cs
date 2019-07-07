@@ -108,7 +108,10 @@ public class Player : MonoBehaviour
 
                         ResourceObject resourceObject = hit.transform.GetComponent<ResourceObject>();
                         Debug.Log("Hit the object");
-                        resourceObject.Interact();
+                        int collectedResources = resourceObject.Collect();
+
+                        resources += collectedResources;
+                        hud.Resources = resources;
                     }
                 }
             }

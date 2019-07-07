@@ -4,6 +4,13 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
+    public enum PlayerTool
+    {
+        Pickaxe,      
+        None,
+        Grenade
+    }
+
     [Header("Focal Point variables")]
     [SerializeField] private GameObject focalPoint;
     [SerializeField] private float focalDistance;
@@ -15,12 +22,23 @@ public class Player : MonoBehaviour
     [SerializeField] private KeyCode interactionKey;
     [SerializeField] private float interactionDistance;
 
+    [Header("Interface")]
+    [SerializeField] private HUDController hud;
+
+    [Header("Gameplay")]
+    [SerializeField] private KeyCode toolSwitchKey;
+    [SerializeField] private PlayerTool tool;
+
     private bool isFocalPointOnLeft = true;
+    private int resources = 0;
 
     // Start is called before the first frame update
     void Start()
     {
         Cursor.lockState = CursorLockMode.Locked;
+
+        hud.Resources = resources;
+        hud.Tool = tool;
     }
 
     // Update is called once per frame
@@ -50,6 +68,42 @@ public class Player : MonoBehaviour
                     hit.transform.GetComponent<Door>().Interact();
                 }
             }
+        }
+        
+        // Tool switch logic
+        if (Input.GetKeyDown(toolSwitchKey))
+        {
+            //Cycle between the available tools.
+            int currentToolIndex = (int) tool;
+            currentToolIndex++;
+
+            if(currentToolIndex == System.Enum.GetNames(typeof(PlayerTool)).Length)
+            {
+                currentToolIndex = 0;
+            }
+            // Get the new Tool
+            tool = (PlayerTool)currentToolIndex;
+            hud.Tool = tool;
+        }
+
+       //Tool usage Logic.
+
+        if(Input.GetAxis("Fire1") > 0)
+        {
+            if (tool == PlayerTool.Pickaxe)
+            {
+                RaycastHit hit;
+                if (Physics.Raycast(gameCamera.transform.position, gameCamera.transform.forward, out hit, interactionDistance))
+                {
+                    if (hit.transform.GetComponent<ResourceObject>() != null)
+                    {
+                        ResourceObject resourceObject = hit.transform.GetComponent<ResourceObject>();
+                        Debug.Log("Hit the object");
+                        resourceObject.Interact();
+                    }
+                }
+            }
+            
         }
     }
 }

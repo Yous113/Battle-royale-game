@@ -11,7 +11,7 @@ public class HUDController : MonoBehaviour
     [Header("Tool selector")]
     [SerializeField] private GameObject toolFocus;
     [SerializeField] private GameObject toolContainer;
-    [SerializeField] private float focusSmothness;
+    [SerializeField] private float focusSmoothness;
 
 
     private float targetFocusX = 0;
@@ -37,17 +37,15 @@ public class HUDController : MonoBehaviour
     private void Start()
     {
         targetFocusX = toolContainer.transform.GetChild(0).transform.position.x;
-        toolFocus.transform.position = new Vector3(0, toolFocus.transform.position.y);
+        toolFocus.transform.position = new Vector3(targetFocusX, toolFocus.transform.position.y);
     }
 
     private void Update()
     {
-        toolFocus.transform.position = new Vector3
-            (
-            Mathf.Lerp(toolFocus.transform.position.x,
-            targetFocusX, Time.deltaTime * focusSmothness),
-            toolFocus.transform.position.y
-            );
+        toolFocus.transform.position = new Vector3(
+          Mathf.Lerp(toolFocus.transform.position.x, targetFocusX, Time.deltaTime * focusSmoothness),
+          toolFocus.transform.position.y
+      );
     }
 
 }

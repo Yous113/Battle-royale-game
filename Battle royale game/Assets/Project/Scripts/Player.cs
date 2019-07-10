@@ -93,6 +93,17 @@ public class Player : MonoBehaviour
 
         }
 
+        //Preservering(Bevare) the obstacles horizontal rotation
+        if (currentObstacle != null)
+        {
+            currentObstacle.transform.eulerAngles = new Vector3
+                (
+                0, 
+                currentObstacle.transform.eulerAngles.y, 
+                currentObstacle.transform.eulerAngles.z
+                );
+        }
+
        //Tool usage Logic.
 
         if(Input.GetAxis("Fire1") > 0)

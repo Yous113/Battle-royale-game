@@ -45,7 +45,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   health: 10
-  cost: 4
+  cost: 6
 --- !u!1001 &4196424409254827727
 PrefabInstance:
   m_ObjectHideFlags: 0

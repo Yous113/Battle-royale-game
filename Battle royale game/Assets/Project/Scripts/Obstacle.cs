@@ -7,10 +7,18 @@ public class Obstacle : MonoBehaviour
     [SerializeField] private int health;
     [SerializeField] private int cost;
 
+    public int Cost
+    {
+        get
+        {
+            return cost;
+        }
+    }
+
     private Collider obstacleCollider;
     
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
         obstacleCollider = GetComponentInChildren<Collider>();
 
@@ -26,6 +34,7 @@ public class Obstacle : MonoBehaviour
 
     public void place()
     {
-
+        // Enable the collider
+        obstacleCollider.enabled = true;
     }
 }

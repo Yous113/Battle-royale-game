@@ -33,9 +33,15 @@ public class Player : MonoBehaviour
     [SerializeField] private PlayerTool tool;
     [SerializeField] private float resourceCollectionCooldown;
 
+
+    [Header("Obstacles")]
+    [SerializeField] private GameObject obstaclePlacementContainer;
+    [SerializeField] private GameObject[] obstaclePrefabs;
+
     private bool isFocalPointOnLeft = true;
     private int resources = 0;
     private float resourceCollectionCooldownTimer = 0;
+    private GameObject currentObstacle;
 
     // Start is called before the first frame update
     void Start()
@@ -113,22 +119,30 @@ public class Player : MonoBehaviour
         hud.Tool = tool;
 
         // Check for obstacle placement logic
+        int obstacleToAddIndex = -1;
         if (tool == PlayerTool.ObstacleVertical)
         {
-           // Show an obstacle in placement mode.
+            obstacleToAddIndex = 0;
         }
-        else if(tool == PlayerTool.ObstacleRamp)
+        else if (tool == PlayerTool.ObstacleRamp)
         {
+            obstacleToAddIndex = 1;
+        }
+        else if (tool == PlayerTool.ObstacleHorizontal)
+        {
+            obstacleToAddIndex = 2;
+        }
 
-        }
-        else if (tool == PlayerTool.ObstacleVertical)
+        if (currentObstacle != null) Destroy(currentObstacle);
+        if (obstacleToAddIndex >= 0)
         {
+            currentObstacle = Instantiate(obstaclePrefabs[obstacleToAddIndex]);
+            currentObstacle.transform.SetParent(obstaclePlacementContainer.transform);
 
+            currentObstacle.transform.localPosition = Vector3.zero;
+            currentObstacle.transform.localRotation = Quaternion.identity;
         }
-        else if (previousTool == PlayerTool.ObstacleHorizontal)
-        {
-           // Remove any obstacles in placement mode
-        }
+
     }
 
     private void UseTool()
@@ -153,3 +167,4 @@ public class Player : MonoBehaviour
         }
     }
 }
+

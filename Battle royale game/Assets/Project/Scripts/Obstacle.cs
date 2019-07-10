@@ -38,7 +38,7 @@ public class Obstacle : MonoBehaviour
         
     }
 
-    public void place()
+    public void Place()
     {
         // Enable the collider
         obstacleCollider.enabled = true;

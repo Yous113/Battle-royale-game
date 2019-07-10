@@ -113,18 +113,16 @@ public class Player : MonoBehaviour
             UseToolContinuous();
         }
 
-        // Tool usage logic (tigger).
-        if (Input.GetAxis("Fire1") > 0.1f)
-        {
+      // Tool usage logic (trigger).
+        if (Input.GetAxis("Fire1") > 0.1f) {
             if (!obstaclePlacementLock)
             {
                 obstaclePlacementLock = true;
                 UseToolTrigger();
             }
-            else
-            {
-                obstaclePlacementLock = false;
-            }
+        } else {
+            obstaclePlacementLock = false;
+        }
         }
     }
 
@@ -201,6 +199,7 @@ public class Player : MonoBehaviour
         {
             int cost = currentObstacle.GetComponent<Obstacle>().Cost;
             resources -= cost;
+
             hud.Resources = resources;
             hud.UpdateResourcesRequirement(cost, resources);
 
@@ -208,7 +207,7 @@ public class Player : MonoBehaviour
             newObstacle.transform.SetParent(obstacleContainer.transform);
             newObstacle.transform.position = currentObstacle.transform.position;
             newObstacle.transform.rotation = currentObstacle.transform.rotation;
-            newObstacle.GetComponent<Obstacle>().place();
+            newObstacle.GetComponent<Obstacle>().Place();
         }
     }
 }

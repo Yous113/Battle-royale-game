@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 
-public class Weapon
+public abstract class Weapon
 {
     private int clipAmmunition = 0;
     private int totalAmmunition = 0;    

@@ -8,11 +8,15 @@ public class HUDController : MonoBehaviour
     [Header("Interface Elements")]
     [SerializeField] private Text resourcesText;
     [SerializeField] private Text resourcesRequirementText;
+    [SerializeField] private Text weaponNameText;
+    [SerializeField] private Text weaponAmmunitionText;
 
     [Header("Tool selector")]
     [SerializeField] private GameObject toolFocus;
     [SerializeField] private GameObject toolContainer;
     [SerializeField] private float focusSmoothness;
+
+    
 
 
     private float targetFocusX = 0;
@@ -68,6 +72,22 @@ public class HUDController : MonoBehaviour
         } else
         {
             resourcesRequirementText.color = Color.white;
+        }
+    }
+
+    public void UpdateWeapon (Weapon weapon)
+    {
+        if(weapon == null)
+        {
+            weaponNameText.enabled = false;
+            weaponAmmunitionText.enabled = false;
+        } else
+        {
+            weaponNameText.enabled = true;
+            weaponAmmunitionText.enabled = true;
+
+            weaponNameText.text = weapon.Name;
+            weaponAmmunitionText.text = weapon.ClipAmmunition + " / " + weapon.TotalAmunnition;
         }
     }
 }

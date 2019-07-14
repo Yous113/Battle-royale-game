@@ -45,6 +45,8 @@ public class Player : MonoBehaviour
     private GameObject currentObstacle;
     private bool obstaclePlacementLock;
 
+    private List<Weapon> weapons;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -53,9 +55,9 @@ public class Player : MonoBehaviour
         resources = initialResourceCount;
         hud.Resources = resources;
         hud.Tool = tool;
+        hud.UpdateWeapon(null);
 
-        Weapon weapon = new Pistol();
-        Debug.Log(weapon.ClipSize);
+        weapons = new List<Weapon>();
     }
 
     // Update is called once per frame
@@ -214,7 +216,47 @@ public class Player : MonoBehaviour
                 newObstacle.GetComponent<Obstacle>().Place();
             }
         }
+
+    private void OnTriggerEnter(Collider otherCollider)
+    {
+        if (otherCollider.gameObject.GetComponent<ItemBox>() != null)
+        {
+            ItemBox itemBox = otherCollider.gameObject.GetComponent<ItemBox>();
+
+            GiveItem(itemBox.Type, itemBox.Amount);
+
+            Destroy(otherCollider.gameObject);
+        }
     }
+
+    private void GiveItem(ItemBox.ItemType type, int amount)
+    {
+        if (type == ItemBox.ItemType.Pistol)
+        {
+            // Create a weapon reference
+            Weapon weapon = null;
+
+            // Check if we already have an instance of this weapon.
+            for (int i = 0; i < weapons.Count; i++)
+            {
+                if (weapons[i] is Pistol)
+                {
+                    weapon = weapons[i];
+                }
+            }
+
+            // if we dont have a weaoin of this type, Create one, and add it to the list
+            if (weapon == null)
+            { 
+              weapon = new Pistol();
+              weapons.Add(weapon);
+            }
+
+            weapon.AddAmmunition(amount);
+            weapon.LoadClip();
+        }
+    }
+}
 
 
 

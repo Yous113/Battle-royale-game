@@ -47,6 +47,9 @@ public class Player : MonoBehaviour
 
     private List<Weapon> weapons;
 
+    private bool isUsingTools = true;
+    private Weapon weapon;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -94,6 +97,29 @@ public class Player : MonoBehaviour
             }
         }
 
+        // Select weapons
+        if(Input.GetKeyDown("1"))
+        {
+            SwitchWeapon(0);
+        } else if (Input.GetKeyDown("2"))
+        {
+            SwitchWeapon(1);
+        }
+        else if (Input.GetKeyDown("3"))
+        {
+            SwitchWeapon(2);
+        }
+        else if (Input.GetKeyDown("4"))
+        {
+            SwitchWeapon(3);
+        }
+        else if (Input.GetKeyDown("5"))
+        {
+            SwitchWeapon(4);
+        }
+
+
+
         // Tool switch logic
         if (Input.GetKeyDown(toolSwitchKey))
         {
@@ -133,52 +159,76 @@ public class Player : MonoBehaviour
         }
 
     }
-        private void SwitchTool()
+    private void SwitchWeapon(int index)
+    {
+        if (index < weapons.Count)
         {
-            PlayerTool previousTool = tool;
 
-            //Cycle between the available tools.
-            int currentToolIndex = (int)tool;
-            currentToolIndex++;
+            isUsingTools = false;
 
-            if (currentToolIndex == System.Enum.GetNames(typeof(PlayerTool)).Length)
-            {
-                currentToolIndex = 0;
-            }
-            // Get the new Tool
-            tool = (PlayerTool)currentToolIndex;
+            weapon = weapons[index];
+            hud.UpdateWeapon(weapon);
+
+            tool = PlayerTool.None;
             hud.Tool = tool;
 
-            // Check for obstacle placement logic
-            int obstacleToAddIndex = -1;
-            if (tool == PlayerTool.ObstacleVertical)
-            {
-                obstacleToAddIndex = 0;
-            }
-            else if (tool == PlayerTool.ObstacleRamp)
-            {
-                obstacleToAddIndex = 1;
-            }
-            else if (tool == PlayerTool.ObstacleHorizontal)
-            {
-                obstacleToAddIndex = 2;
-            }
 
-            if (currentObstacle != null) Destroy(currentObstacle);
-            if (obstacleToAddIndex >= 0)
-            {
-                currentObstacle = Instantiate(obstaclePrefabs[obstacleToAddIndex]);
-                currentObstacle.transform.SetParent(obstaclePlacementContainer.transform);
+        }
+    }
 
-                currentObstacle.transform.localPosition = Vector3.zero;
-                currentObstacle.transform.localRotation = Quaternion.identity;
+    private void SwitchTool()
+        {
 
-                hud.UpdateResourcesRequirement(currentObstacle.GetComponent<Obstacle>().Cost, resources);
-            }
+        isUsingTools = true;
+
+        weapon = null;
+        hud.UpdateWeapon(weapon);
+
+       // PlayerTool previousTool = tool;
+
+        //Cycle between the available tools.
+        int currentToolIndex = (int)tool;
+        currentToolIndex++;
+
+        if (currentToolIndex == System.Enum.GetNames(typeof(PlayerTool)).Length)
+        {
+            currentToolIndex = 0;
+        }
+        // Get the new Tool
+        tool = (PlayerTool)currentToolIndex;
+        hud.Tool = tool;
+
+        // Check for obstacle placement logic
+        int obstacleToAddIndex = -1;
+        if (tool == PlayerTool.ObstacleVertical)
+        {
+            obstacleToAddIndex = 0;
+        }
+        else if (tool == PlayerTool.ObstacleRamp)
+        {
+            obstacleToAddIndex = 1;
+        }
+        else if (tool == PlayerTool.ObstacleHorizontal)
+        {
+            obstacleToAddIndex = 2;
+        }
+
+        if (currentObstacle != null) Destroy(currentObstacle);
+        if (obstacleToAddIndex >= 0)
+        {
+            currentObstacle = Instantiate(obstaclePrefabs[obstacleToAddIndex]);
+            currentObstacle.transform.SetParent(obstaclePlacementContainer.transform);
+
+            currentObstacle.transform.localPosition = Vector3.zero;
+            currentObstacle.transform.localRotation = Quaternion.identity;
+
+            hud.UpdateResourcesRequirement(currentObstacle.GetComponent<Obstacle>().Cost, resources);
 
         }
 
-        private void UseToolContinuous()
+        }
+
+    private void UseToolContinuous()
         {
             if (tool == PlayerTool.Pickaxe)
             {
@@ -199,7 +249,8 @@ public class Player : MonoBehaviour
                 }
             }
         }
-        private void UseToolTrigger()
+
+    private void UseToolTrigger()
         {
             if (currentObstacle != null && resources >= currentObstacle.GetComponent<Obstacle>().Cost)
             {
@@ -234,28 +285,34 @@ public class Player : MonoBehaviour
         if (type == ItemBox.ItemType.Pistol)
         {
             // Create a weapon reference
-            Weapon weapon = null;
+            Weapon Currentweapon = null;
 
             // Check if we already have an instance of this weapon.
             for (int i = 0; i < weapons.Count; i++)
             {
                 if (weapons[i] is Pistol)
                 {
-                    weapon = weapons[i];
+                    Currentweapon = weapons[i];
                 }
             }
 
             // if we dont have a weaoin of this type, Create one, and add it to the list
-            if (weapon == null)
-            { 
-              weapon = new Pistol();
-              weapons.Add(weapon);
+            if (Currentweapon == null)
+            {
+              Currentweapon = new Pistol();
+              weapons.Add(Currentweapon);
             }
 
             weapon.AddAmmunition(amount);
             weapon.LoadClip();
+
+            if(Currentweapon == weapon)
+            {
+                hud.UpdateWeapon(weapon);
+            }
         }
     }
+
 }
 
 

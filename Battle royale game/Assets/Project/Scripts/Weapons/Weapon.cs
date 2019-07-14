@@ -37,5 +37,10 @@ public abstract class Weapon
         clipAmmunition += ammunitionToLoad;
         totalAmmunition -= ammunitionToLoad;
     }
+
+    public void Update (float timeElapsed, bool isPressingTrigger)
+    {
+
+    }
 }
 

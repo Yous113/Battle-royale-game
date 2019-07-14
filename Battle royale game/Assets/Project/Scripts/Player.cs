@@ -158,7 +158,11 @@ public class Player : MonoBehaviour
 
         }
 
+        UpdateWeapon();
+
     }
+
+
     private void SwitchWeapon(int index)
     {
         if (index < weapons.Count)
@@ -310,6 +314,17 @@ public class Player : MonoBehaviour
             {
                 hud.UpdateWeapon(weapon);
             }
+        }
+    }
+
+    private void UpdateWeapon()
+    {
+        if(weapon != null)
+        {
+            float timeElapsed = Time.deltaTime;
+            bool isPressingTrigger = Input.GetAxis("Fire1") > 0.1f;
+
+            weapon.Update(timeElapsed, isPressingTrigger);
         }
     }
 

@@ -107,108 +107,114 @@ public class Player : MonoBehaviour
         }
 
         // Tool usage Logic (continuous).
-
         if (Input.GetAxis("Fire1") > 0.1f)
         {
             UseToolContinuous();
         }
 
-      // Tool usage logic (trigger).
-        if (Input.GetAxis("Fire1") > 0.1f) {
+        // Tool usage logic (trigger).
+        if (Input.GetAxis("Fire1") > 0.1f)
+        {
             if (!obstaclePlacementLock)
             {
                 obstaclePlacementLock = true;
                 UseToolTrigger();
             }
-        } else {
+        }
+        else
+        {
             obstaclePlacementLock = false;
-        }
-        }
-    }
 
-    private void SwitchTool()
-    {
-        PlayerTool previousTool = tool;
-
-        //Cycle between the available tools.
-        int currentToolIndex = (int)tool;
-        currentToolIndex++;
-
-        if (currentToolIndex == System.Enum.GetNames(typeof(PlayerTool)).Length)
-        {
-            currentToolIndex = 0;
-        }
-        // Get the new Tool
-        tool = (PlayerTool)currentToolIndex;
-        hud.Tool = tool;
-
-        // Check for obstacle placement logic
-        int obstacleToAddIndex = -1;
-        if (tool == PlayerTool.ObstacleVertical)
-        {
-            obstacleToAddIndex = 0;
-        }
-        else if (tool == PlayerTool.ObstacleRamp)
-        {
-            obstacleToAddIndex = 1;
-        }
-        else if (tool == PlayerTool.ObstacleHorizontal)
-        {
-            obstacleToAddIndex = 2;
-        }
-
-        if (currentObstacle != null) Destroy(currentObstacle);
-        if (obstacleToAddIndex >= 0)
-        {            
-            currentObstacle = Instantiate(obstaclePrefabs[obstacleToAddIndex]);
-            currentObstacle.transform.SetParent(obstaclePlacementContainer.transform);
-
-            currentObstacle.transform.localPosition = Vector3.zero;
-            currentObstacle.transform.localRotation = Quaternion.identity;
-
-            hud.UpdateResourcesRequirement(currentObstacle.GetComponent<Obstacle>().Cost, resources);
         }
 
     }
-
-    private void UseToolContinuous()
-    {
-        if (tool == PlayerTool.Pickaxe)
+        private void SwitchTool()
         {
-            RaycastHit hit;
-            if (Physics.Raycast(gameCamera.transform.position, gameCamera.transform.forward, out hit, interactionDistance))
+            PlayerTool previousTool = tool;
+
+            //Cycle between the available tools.
+            int currentToolIndex = (int)tool;
+            currentToolIndex++;
+
+            if (currentToolIndex == System.Enum.GetNames(typeof(PlayerTool)).Length)
             {
-                if (resourceCollectionCooldownTimer <= 0 && hit.transform.GetComponent<ResourceObject>() != null)
+                currentToolIndex = 0;
+            }
+            // Get the new Tool
+            tool = (PlayerTool)currentToolIndex;
+            hud.Tool = tool;
+
+            // Check for obstacle placement logic
+            int obstacleToAddIndex = -1;
+            if (tool == PlayerTool.ObstacleVertical)
+            {
+                obstacleToAddIndex = 0;
+            }
+            else if (tool == PlayerTool.ObstacleRamp)
+            {
+                obstacleToAddIndex = 1;
+            }
+            else if (tool == PlayerTool.ObstacleHorizontal)
+            {
+                obstacleToAddIndex = 2;
+            }
+
+            if (currentObstacle != null) Destroy(currentObstacle);
+            if (obstacleToAddIndex >= 0)
+            {
+                currentObstacle = Instantiate(obstaclePrefabs[obstacleToAddIndex]);
+                currentObstacle.transform.SetParent(obstaclePlacementContainer.transform);
+
+                currentObstacle.transform.localPosition = Vector3.zero;
+                currentObstacle.transform.localRotation = Quaternion.identity;
+
+                hud.UpdateResourcesRequirement(currentObstacle.GetComponent<Obstacle>().Cost, resources);
+            }
+
+        }
+
+        private void UseToolContinuous()
+        {
+            if (tool == PlayerTool.Pickaxe)
+            {
+                RaycastHit hit;
+                if (Physics.Raycast(gameCamera.transform.position, gameCamera.transform.forward, out hit, interactionDistance))
                 {
-                    resourceCollectionCooldownTimer = resourceCollectionCooldown;
+                    if (resourceCollectionCooldownTimer <= 0 && hit.transform.GetComponent<ResourceObject>() != null)
+                    {
+                        resourceCollectionCooldownTimer = resourceCollectionCooldown;
 
-                    ResourceObject resourceObject = hit.transform.GetComponent<ResourceObject>();
-                    Debug.Log("Hit the object");
-                    int collectedResources = resourceObject.Collect();
+                        ResourceObject resourceObject = hit.transform.GetComponent<ResourceObject>();
+                        Debug.Log("Hit the object");
+                        int collectedResources = resourceObject.Collect();
 
-                    resources += collectedResources;
-                    hud.Resources = resources;
+                        resources += collectedResources;
+                        hud.Resources = resources;
+                    }
                 }
+            }
+        }
+        private void UseToolTrigger()
+        {
+            if (currentObstacle != null && resources >= currentObstacle.GetComponent<Obstacle>().Cost)
+            {
+                int cost = currentObstacle.GetComponent<Obstacle>().Cost;
+                resources -= cost;
+
+                hud.Resources = resources;
+                hud.UpdateResourcesRequirement(cost, resources);
+
+                GameObject newObstacle = Instantiate(currentObstacle);
+                newObstacle.transform.SetParent(obstacleContainer.transform);
+                newObstacle.transform.position = currentObstacle.transform.position;
+                newObstacle.transform.rotation = currentObstacle.transform.rotation;
+                newObstacle.GetComponent<Obstacle>().Place();
             }
         }
     }
 
-    private void UseToolTrigger()
-    {
-        if (currentObstacle != null && resources >= currentObstacle.GetComponent<Obstacle>().Cost)
-        {
-            int cost = currentObstacle.GetComponent<Obstacle>().Cost;
-            resources -= cost;
 
-            hud.Resources = resources;
-            hud.UpdateResourcesRequirement(cost, resources);
 
-            GameObject newObstacle = Instantiate(currentObstacle);
-            newObstacle.transform.SetParent(obstacleContainer.transform);
-            newObstacle.transform.position = currentObstacle.transform.position;
-            newObstacle.transform.rotation = currentObstacle.transform.rotation;
-            newObstacle.GetComponent<Obstacle>().Place();
-        }
-    }
-}
+
+
 

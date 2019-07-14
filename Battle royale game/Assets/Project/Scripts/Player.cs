@@ -53,6 +53,9 @@ public class Player : MonoBehaviour
         resources = initialResourceCount;
         hud.Resources = resources;
         hud.Tool = tool;
+
+        Weapon weapon = new Pistol();
+        Debug.Log(weapon.ClipSize);
     }
 
     // Update is called once per frame

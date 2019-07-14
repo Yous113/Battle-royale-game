@@ -59,7 +59,7 @@ namespace UnityStandardAssets.Characters.ThirdPerson
 			move = transform.InverseTransformDirection(move);
 			CheckGroundStatus();
 			move = Vector3.ProjectOnPlane(move, m_GroundNormal);
-            Debug.Log(Input.GetAxis("Mouse X"));
+            //Debug.Log(Input.GetAxis("Mouse X"));
 			m_TurnAmount = Input.GetAxis("Mouse X") * m_CursorSensitivity;
 			m_ForwardAmount = move.z;
             m_StrafeAmount = Input.GetAxis("Horizontal");

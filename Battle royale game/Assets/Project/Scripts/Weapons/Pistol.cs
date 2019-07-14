@@ -8,7 +8,7 @@ public class Pistol : Weapon
         clipSize = 12;
         maxAmmunition = 60;
         reloadTime = 1.0f;
-        cooldownTime = 0.25f;
+        cooldownDuration = 0.25f;
         isAutomatic = false;
         name = "Pistol";
     }

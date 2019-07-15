@@ -6273,6 +6273,8 @@ MonoBehaviour:
   - {fileID: 4196424408781872986, guid: 068da435bf322824a967cb50228c328a, type: 3}
   - {fileID: 551149544638835314, guid: 4bee39073a6bd6944b7cd029dfec3d78, type: 3}
   shootOrigin: {fileID: 1466375730}
+  DebugPositionPrefab: {fileID: 6913016422903003286, guid: edf365f8273d91549b439ba53e8f6c9e,
+    type: 3}
 --- !u!1001 &602549411
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -42,6 +42,9 @@ public class Player : MonoBehaviour
     [Header("Weapons")]
     [SerializeField] private GameObject shootOrigin;
 
+    [Header("Debug")]
+    [SerializeField] private GameObject DebugPositionPrefab;
+
     private bool isFocalPointOnLeft = true;
     private int resources = 0;
     private float resourceCollectionCooldownTimer = 0;
@@ -343,12 +346,22 @@ public class Player : MonoBehaviour
         if (Physics.Raycast(gameCamera.transform.position + (gameCamera.transform.forward * distanceFromCamera), gameCamera.transform.forward, out targetHit))
         {
             Vector3 hitPosition = targetHit.point;
+            hitPosition = new Vector3
+           (
+                hitPosition.x + Random.Range(-weapon.AimVariation, weapon.AimVariation), 
+                hitPosition.y + Random.Range(-weapon.AimVariation, weapon.AimVariation), 
+                hitPosition.z + Random.Range(-weapon.AimVariation, weapon.AimVariation)
+                );
 
             Vector3 shootDirection = (hitPosition - shootOrigin.transform.position).normalized;
 
             RaycastHit shootHit;
             if(Physics.Raycast(shootOrigin.transform.position, shootDirection, out shootHit))
             {
+                GameObject debugPositionInstance = Instantiate(DebugPositionPrefab);
+                debugPositionInstance.transform.position = shootHit.point;
+                Destroy(debugPositionInstance, 0.5f);
+
                 GameObject target = shootHit.transform.gameObject;
 
 #if UNITY_EDITOR

@@ -337,7 +337,7 @@ public class Player : MonoBehaviour
     {
         RaycastHit hit;
         Vector3 origin = gameCamera.transform.position;
-        origin += gameCamera.transform.forward * gameCamera.FollowOffset.z;
+        origin += gameCamera.transform.forward * Vector3.Distance(gameCamera.transform.position, transform.position);
 #if UNITY_EDITOR
         // Draw interaction line
         Debug.DrawLine(origin, origin + gameCamera.transform.forward * 1000, Color.red);

@@ -321,14 +321,15 @@ public class Player : MonoBehaviour
     {
         if(weapon != null)
         {
+            if(Input.GetKeyDown(KeyCode.R))
+            {
+                weapon.Reload();
+            }
             float timeElapsed = Time.deltaTime;
             bool isPressingTrigger = Input.GetAxis("Fire1") > 0.1f;
 
             bool hasShot = weapon.Update(timeElapsed, isPressingTrigger);
-            if (hasShot)
-            {
                 hud.UpdateWeapon(weapon);
-            }
         }
     }
 

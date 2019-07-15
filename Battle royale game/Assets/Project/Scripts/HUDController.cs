@@ -10,6 +10,7 @@ public class HUDController : MonoBehaviour
     [SerializeField] private Text resourcesRequirementText;
     [SerializeField] private Text weaponNameText;
     [SerializeField] private Text weaponAmmunitionText;
+    [SerializeField] private RectTransform weaponReloadBar;
 
     [Header("Tool selector")]
     [SerializeField] private GameObject toolFocus;
@@ -88,6 +89,7 @@ public class HUDController : MonoBehaviour
         {
             weaponNameText.enabled = false;
             weaponAmmunitionText.enabled = false;
+            weaponReloadBar.localScale = new Vector3(0, 1, 1);
         } else
         {
             weaponNameText.enabled = true;
@@ -95,6 +97,14 @@ public class HUDController : MonoBehaviour
 
             weaponNameText.text = weapon.Name;
             weaponAmmunitionText.text = weapon.ClipAmmunition + " / " + weapon.TotalAmunnition;
+
+            if(weapon.ReloadTimer > 0)
+            {
+                weaponReloadBar.localScale = new Vector3(weapon.ReloadTimer / weapon.ReloadDuration, 1, 1);
+            } else
+            {
+                weaponReloadBar.localScale = new Vector3(0, 1, 1);
+            }
         }
     }
 }

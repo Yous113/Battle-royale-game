@@ -342,18 +342,17 @@ public class Player : MonoBehaviour
         RaycastHit targetHit;
         if (Physics.Raycast(gameCamera.transform.position + (gameCamera.transform.forward * distanceFromCamera), gameCamera.transform.forward, out targetHit))
         {
-            GameObject cameraTarget = targetHit.transform.gameObject;
+            Vector3 hitPosition = targetHit.point;
 
-            Vector3 shootDirection = (cameraTarget.transform.position - shootOrigin.transform.position).normalized;
+            Vector3 shootDirection = (hitPosition - shootOrigin.transform.position).normalized;
 
             RaycastHit shootHit;
             if(Physics.Raycast(shootOrigin.transform.position, shootDirection, out shootHit))
             {
                 GameObject target = shootHit.transform.gameObject;
 
-                Debug.Log(target.name);
 #if UNITY_EDITOR
-                // Draw interaction line
+                // Draw a line to show the shooting ray.
                 Debug.DrawLine(shootOrigin.transform.position, shootOrigin.transform.position + shootDirection * 100, Color.red);
 #endif
             }

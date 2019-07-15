@@ -286,35 +286,32 @@ public class Player : MonoBehaviour
 
     private void GiveItem(ItemBox.ItemType type, int amount)
     {
-        if (type == ItemBox.ItemType.Pistol)
+        // Create a weapon reference
+        Weapon currentweapon = null;
+
+        // Check if we already have an instance of this weapon.
+        for (int i = 0; i < weapons.Count; i++)
         {
-            // Create a weapon reference
-            Weapon Currentweapon = null;
-
-            // Check if we already have an instance of this weapon.
-            for (int i = 0; i < weapons.Count; i++)
-            {
-                if (weapons[i] is Pistol)
-                {
-                    Currentweapon = weapons[i];
-                }
-            }
-
-            // if we dont have a weaoin of this type, Create one, and add it to the list
-            if (Currentweapon == null)
-            {
-              Currentweapon = new Pistol();
-              weapons.Add(Currentweapon);
-            }
-
-            Currentweapon.AddAmmunition(amount);
-            Currentweapon.LoadClip();
-
-            if(Currentweapon == weapon)
-            {
-                hud.UpdateWeapon(weapon);
-            }
+            if (type == ItemBox.ItemType.Pistol && weapons[i] is Pistol) currentweapon = weapons[i];
+            else if (type == ItemBox.ItemType.MachineGun && weapons[i] is MachineGun) currentweapon = weapons[i];
         }
+
+        // if we dont have a weaoin of this type, Create one, and add it to the list
+        if (currentweapon == null)
+        {
+            if (type == ItemBox.ItemType.Pistol) currentweapon = new Pistol();
+            else if (type == ItemBox.ItemType.MachineGun) currentweapon = new MachineGun();
+            weapons.Add(currentweapon);
+        }
+
+        currentweapon.AddAmmunition(amount);
+        currentweapon.LoadClip();
+
+        if(currentweapon == weapon)
+        {
+            hud.UpdateWeapon(weapon);
+        }
+
     }
 
     private void UpdateWeapon()

@@ -10,7 +10,7 @@ public abstract class Weapon
     // Weapon Settings (costumizable on weapon classes)
     protected int clipSize = 0;
     protected int maxAmmunition = 0;
-    protected float reloadTime = 0.0f;
+    protected float reloadDuration = 0.0f;
     protected float cooldownDuration = 0.0f;
     protected bool isAutomatic = false;
     protected string name = "";
@@ -18,6 +18,7 @@ public abstract class Weapon
     //Private fields
     private float reloadTimer = 0.0f;
     private float cooldownTimer = 0.0f;
+    private bool pressedTrigger = false;
     
     // Properties
     public int ClipAmmunition { get { return clipAmmunition; } set { clipAmmunition = value; } }
@@ -25,7 +26,7 @@ public abstract class Weapon
 
     public int ClipSize { get { return clipSize; } }
     public int MaxAmunnition { get { return maxAmmunition; } }
-    public float ReloadDuration { get { return reloadTime; } }
+    public float ReloadDuration { get { return reloadDuration; } }
     public float CooldownDuration { get { return cooldownDuration; } }
     public bool IsAutomatic { get { return isAutomatic; } }
     public string Name { get { return name; } }
@@ -45,13 +46,31 @@ public abstract class Weapon
         totalAmmunition -= ammunitionToLoad;
     }
 
-    public void Update (float deltaTime, bool isPressingTrigger)
+    public bool Update (float deltaTime, bool isPressingTrigger)
     {
+        bool hasShot = false;
+
         cooldownTimer -= deltaTime;
         if(cooldownTimer <= 0)
         {
             bool canShoot = false;
+
+            if (isAutomatic) canShoot = isPressingTrigger;
+            else if (!pressedTrigger && isPressingTrigger) canShoot = true;
+
+            if(canShoot)
+            {
+                cooldownTimer = cooldownDuration;
+                if(clipAmmunition > 0)
+                {
+                    clipAmmunition--;
+                    hasShot = true;
+                }
+            }
+
+            pressedTrigger = isPressingTrigger;
         }
+        return hasShot;
     }
 }
 

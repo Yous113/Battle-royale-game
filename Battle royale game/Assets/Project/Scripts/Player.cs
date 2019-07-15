@@ -176,7 +176,7 @@ public class Player : MonoBehaviour
             tool = PlayerTool.None;
             hud.Tool = tool;
 
-
+            if (currentObstacle != null) Destroy(currentObstacle);
         }
     }
 
@@ -307,8 +307,8 @@ public class Player : MonoBehaviour
               weapons.Add(Currentweapon);
             }
 
-            weapon.AddAmmunition(amount);
-            weapon.LoadClip();
+            Currentweapon.AddAmmunition(amount);
+            Currentweapon.LoadClip();
 
             if(Currentweapon == weapon)
             {
@@ -324,7 +324,11 @@ public class Player : MonoBehaviour
             float timeElapsed = Time.deltaTime;
             bool isPressingTrigger = Input.GetAxis("Fire1") > 0.1f;
 
-            weapon.Update(timeElapsed, isPressingTrigger);
+            bool hasShot = weapon.Update(timeElapsed, isPressingTrigger);
+            if (hasShot)
+            {
+                hud.UpdateWeapon(weapon);
+            }
         }
     }
 

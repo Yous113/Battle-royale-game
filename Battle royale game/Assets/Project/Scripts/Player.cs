@@ -327,6 +327,26 @@ public class Player : MonoBehaviour
 
             bool hasShot = weapon.Update(timeElapsed, isPressingTrigger);
                 hud.UpdateWeapon(weapon);
+            if(hasShot)
+            {
+                Shoot();
+            }
+        }
+    }
+    private void Shoot()
+    {
+        RaycastHit hit;
+        Vector3 origin = gameCamera.transform.position;
+        origin += gameCamera.transform.forward * gameCamera.FollowOffset.z;
+#if UNITY_EDITOR
+        // Draw interaction line
+        Debug.DrawLine(origin, origin + gameCamera.transform.forward * 1000, Color.red);
+#endif
+
+        if (Physics.Raycast(origin, gameCamera.transform.forward, out hit))
+        {
+            GameObject target = hit.transform.gameObject;
+            Debug.Log(target.name);
         }
     }
 

@@ -39,6 +39,9 @@ public class Player : MonoBehaviour
     [SerializeField] private GameObject obstacleContainer;
     [SerializeField] private GameObject[] obstaclePrefabs;
 
+    [Header("Weapons")]
+    [SerializeField] private GameObject shootOrigin;
+
     private bool isFocalPointOnLeft = true;
     private int resources = 0;
     private float resourceCollectionCooldownTimer = 0;
@@ -335,17 +338,31 @@ public class Player : MonoBehaviour
     }
     private void Shoot()
     {
-        RaycastHit hit;
-        Vector3 origin = gameCamera.transform.position;
-        origin += gameCamera.transform.forward * Vector3.Distance(gameCamera.transform.position, transform.position);
-#if UNITY_EDITOR
-        // Draw interaction line
-        Debug.DrawLine(origin, origin + gameCamera.transform.forward * 1000, Color.red);
-#endif
-
-        if (Physics.Raycast(origin, gameCamera.transform.forward, out hit))
+        float distanceFromCamera = Vector3.Distance(gameCamera.transform.position, transform.position);
+        RaycastHit targetHit;
+        if (Physics.Raycast(gameCamera.transform.position + (gameCamera.transform.forward * distanceFromCamera), gameCamera.transform.forward, out targetHit))
         {
-            GameObject target = hit.transform.gameObject;
+            GameObject cameraTarget = targetHit.transform.gameObject;
+
+            Vector3 shootDirection = (cameraTarget.transform.position - shootOrigin.transform.position).normalized;
+
+            RaycastHit shootHit;
+            if(Physics.Raycast(shootOrigin.transform.position, shootDirection, out shootHit))
+            {
+                GameObject target = shootHit.transform.gameObject;
+
+                Debug.Log(target.name);
+#if UNITY_EDITOR
+                // Draw interaction line
+                Debug.DrawLine(shootOrigin.transform.position, shootOrigin.transform.position + shootDirection * 100, Color.red);
+#endif
+            }
+        }
+        
+
+        if (Physics.Raycast(shootOrigin.transform.position, gameCamera.transform.forward, out targetHit))
+        {
+            GameObject target = targetHit.transform.gameObject;
             Debug.Log(target.name);
         }
     }

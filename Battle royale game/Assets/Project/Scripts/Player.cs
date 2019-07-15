@@ -363,6 +363,12 @@ public class Player : MonoBehaviour
                 Destroy(debugPositionInstance, 0.5f);
 
                 GameObject target = shootHit.transform.gameObject;
+                Debug.Log(target.name);
+
+                if (target.GetComponent<Obstacle>() != null)
+                {
+                    target.GetComponent<Obstacle>().Hit();
+                }
 
 #if UNITY_EDITOR
                 // Draw a line to show the shooting ray.

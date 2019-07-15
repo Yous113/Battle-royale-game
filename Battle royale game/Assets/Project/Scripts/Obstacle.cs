@@ -6,8 +6,10 @@ public class Obstacle : MonoBehaviour
 {
     [SerializeField] private int health;
     [SerializeField] private int cost;
+    [SerializeField] private float hitSmoothness;
 
     private Renderer obstacleRenderer;
+    public int targetScale = 1;
 
     public int Cost
     {
@@ -35,7 +37,12 @@ public class Obstacle : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        transform.localScale = new Vector3
+            (
+            Mathf.Lerp(transform.localEulerAngles.x, targetScale, hitSmoothness * Time.deltaTime),
+            Mathf.Lerp(transform.localEulerAngles.y, targetScale, hitSmoothness * Time.deltaTime),
+            Mathf.Lerp(transform.localEulerAngles.z, targetScale, hitSmoothness * Time.deltaTime)
+            );
     }
 
     public void Place()
@@ -45,5 +52,16 @@ public class Obstacle : MonoBehaviour
 
         //Make the obstacle opaque
         obstacleRenderer.material.color = Color.white;
+    }
+
+    public void Hit ()
+    {
+        transform.localScale = Vector3.one * 0.8f;
+        health--;
+        if(health <= 0)
+        {
+            targetScale = 0;
+            Destroy(gameObject, 1.0f);
+        }
     }
 }

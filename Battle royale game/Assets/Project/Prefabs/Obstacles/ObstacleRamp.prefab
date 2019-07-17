@@ -46,7 +46,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   health: 10
   cost: 6
-  hitSmoothness: 0
+  hitSmoothness: 10
 --- !u!1001 &4196424409254827727
 PrefabInstance:
   m_ObjectHideFlags: 0

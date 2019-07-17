@@ -46,6 +46,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   health: 10
   cost: 6
+  hitSmoothness: 0
 --- !u!1001 &4196424409254827727
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -56,6 +57,10 @@ PrefabInstance:
     - target: {fileID: 100000, guid: 4620f3c93dca8c94c9124d8ba443f43e, type: 3}
       propertyPath: m_Name
       value: FloorPrototype04x01x04
+      objectReference: {fileID: 0}
+    - target: {fileID: 100000, guid: 4620f3c93dca8c94c9124d8ba443f43e, type: 3}
+      propertyPath: m_TagString
+      value: ObstacleShape
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 4620f3c93dca8c94c9124d8ba443f43e, type: 3}
       propertyPath: m_LocalPosition.x

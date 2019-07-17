@@ -9,7 +9,7 @@ public class Obstacle : MonoBehaviour
     [SerializeField] private float hitSmoothness;
 
     private Renderer obstacleRenderer;
-    public int targetScale = 1;
+    private int targetScale = 1;
 
     public int Cost
     {
@@ -39,9 +39,9 @@ public class Obstacle : MonoBehaviour
     {
         transform.localScale = new Vector3
             (
-            Mathf.Lerp(transform.localEulerAngles.x, targetScale, hitSmoothness * Time.deltaTime),
-            Mathf.Lerp(transform.localEulerAngles.y, targetScale, hitSmoothness * Time.deltaTime),
-            Mathf.Lerp(transform.localEulerAngles.z, targetScale, hitSmoothness * Time.deltaTime)
+            Mathf.Lerp(transform.localScale.x, targetScale, hitSmoothness * Time.deltaTime),
+            Mathf.Lerp(transform.localScale.y, targetScale, hitSmoothness * Time.deltaTime),
+            Mathf.Lerp(transform.localScale.z, targetScale, hitSmoothness * Time.deltaTime)
             );
     }
 

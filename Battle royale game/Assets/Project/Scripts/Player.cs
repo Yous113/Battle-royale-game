@@ -67,6 +67,7 @@ public class Player : MonoBehaviour
         hud.UpdateWeapon(null);
 
         weapons = new List<Weapon>();
+
     }
 
     // Update is called once per frame
@@ -365,9 +366,9 @@ public class Player : MonoBehaviour
                 GameObject target = shootHit.transform.gameObject;
                 Debug.Log(target.name);
 
-                if (target.GetComponent<Obstacle>() != null)
+                if (target.tag == "ObstacleShape")
                 {
-                    target.GetComponent<Obstacle>().Hit();
+                    target.transform.parent.gameObject.GetComponent<Obstacle>().Hit();
                 }
 
 #if UNITY_EDITOR

@@ -11,11 +11,13 @@ public class HUDController : MonoBehaviour
     [SerializeField] private Text weaponNameText;
     [SerializeField] private Text weaponAmmunitionText;
     [SerializeField] private RectTransform weaponReloadBar;
+    [SerializeField] private GameObject sniperAim;
 
     [Header("Tool selector")]
     [SerializeField] private GameObject toolFocus;
     [SerializeField] private GameObject toolContainer;
     [SerializeField] private float focusSmoothness;
+
 
     
 
@@ -57,10 +59,15 @@ public class HUDController : MonoBehaviour
         }
     }
 
+    public bool SniperAimVisibility { set { sniperAim.SetActive(value); } }
+
     private void Start()
     {
         targetFocusX = toolContainer.transform.GetChild(0).transform.position.x;
         toolFocus.transform.position = new Vector3(targetFocusX, toolFocus.transform.position.y);
+
+        // Hide the sniper aim
+        sniperAim.SetActive(false);
     }
 
     private void Update()

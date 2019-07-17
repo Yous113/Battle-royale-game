@@ -301,6 +301,7 @@ public class Player : MonoBehaviour
         {
             if (type == ItemBox.ItemType.Pistol && weapons[i] is Pistol) currentweapon = weapons[i];
             else if (type == ItemBox.ItemType.MachineGun && weapons[i] is MachineGun) currentweapon = weapons[i];
+            else if (type == ItemBox.ItemType.Shotgun && weapons[i] is Shotgun) currentweapon = weapons[i];
         }
 
         // if we dont have a weaoin of this type, Create one, and add it to the list
@@ -308,6 +309,7 @@ public class Player : MonoBehaviour
         {
             if (type == ItemBox.ItemType.Pistol) currentweapon = new Pistol();
             else if (type == ItemBox.ItemType.MachineGun) currentweapon = new MachineGun();
+            else if (type == ItemBox.ItemType.Shotgun) currentweapon = new Shotgun();
             weapons.Add(currentweapon);
         }
 
@@ -342,50 +344,58 @@ public class Player : MonoBehaviour
     }
     private void Shoot()
     {
-        float distanceFromCamera = Vector3.Distance(gameCamera.transform.position, transform.position);
-        RaycastHit targetHit;
-        if (Physics.Raycast(gameCamera.transform.position + (gameCamera.transform.forward * distanceFromCamera), gameCamera.transform.forward, out targetHit))
+        int amountOfBullets = 1;
+
+        if (weapon is Shotgun)
         {
-            Vector3 hitPosition = targetHit.point;
-            hitPosition = new Vector3
-           (
-                hitPosition.x + Random.Range(-weapon.AimVariation, weapon.AimVariation), 
-                hitPosition.y + Random.Range(-weapon.AimVariation, weapon.AimVariation), 
-                hitPosition.z + Random.Range(-weapon.AimVariation, weapon.AimVariation)
-                );
-
-            Vector3 shootDirection = (hitPosition - shootOrigin.transform.position).normalized;
-
-            RaycastHit shootHit;
-            if(Physics.Raycast(shootOrigin.transform.position, shootDirection, out shootHit))
+            amountOfBullets = ((Shotgun)weapon).AmountOfBullets;
+        }
+        for (int i = 0; i < amountOfBullets; i++)
+        {
+            float distanceFromCamera = Vector3.Distance(gameCamera.transform.position, transform.position);
+            RaycastHit targetHit;
+            if (Physics.Raycast(gameCamera.transform.position + (gameCamera.transform.forward * distanceFromCamera), gameCamera.transform.forward, out targetHit))
             {
-                GameObject debugPositionInstance = Instantiate(DebugPositionPrefab);
-                debugPositionInstance.transform.position = shootHit.point;
-                Destroy(debugPositionInstance, 0.5f);
+                Vector3 hitPosition = targetHit.point;
+                hitPosition = new Vector3
+               (
+                    hitPosition.x + Random.Range(-weapon.AimVariation, weapon.AimVariation),
+                    hitPosition.y + Random.Range(-weapon.AimVariation, weapon.AimVariation),
+                    hitPosition.z + Random.Range(-weapon.AimVariation, weapon.AimVariation)
+                    );
 
-                GameObject target = shootHit.transform.gameObject;
-                Debug.Log(target.name);
+                Vector3 shootDirection = (hitPosition - shootOrigin.transform.position).normalized;
 
-                if (target.tag == "ObstacleShape")
+                RaycastHit shootHit;
+                if (Physics.Raycast(shootOrigin.transform.position, shootDirection, out shootHit))
                 {
-                    target.transform.parent.gameObject.GetComponent<Obstacle>().Hit();
-                }
+                    GameObject debugPositionInstance = Instantiate(DebugPositionPrefab);
+                    debugPositionInstance.transform.position = shootHit.point;
+                    Destroy(debugPositionInstance, 0.5f);
+
+                    GameObject target = shootHit.transform.gameObject;
+                    Debug.Log(target.name);
+
+                    if (target.tag == "ObstacleShape")
+                    {
+                        target.transform.parent.gameObject.GetComponent<Obstacle>().Hit();
+                    }
 
 #if UNITY_EDITOR
-                // Draw a line to show the shooting ray.
-                Debug.DrawLine(shootOrigin.transform.position, shootOrigin.transform.position + shootDirection * 100, Color.red);
+                    // Draw a line to show the shooting ray.
+                    Debug.DrawLine(shootOrigin.transform.position, shootOrigin.transform.position + shootDirection * 100, Color.red);
 #endif
+                }
+            }
+
+
+            if (Physics.Raycast(shootOrigin.transform.position, gameCamera.transform.forward, out targetHit))
+            {
+                GameObject target = targetHit.transform.gameObject;
+                Debug.Log(target.name);
             }
         }
-        
-
-        if (Physics.Raycast(shootOrigin.transform.position, gameCamera.transform.forward, out targetHit))
-        {
-            GameObject target = targetHit.transform.gameObject;
-            Debug.Log(target.name);
-        }
     }
-
 }
 
 

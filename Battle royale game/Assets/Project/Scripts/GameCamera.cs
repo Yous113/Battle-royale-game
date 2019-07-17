@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class GameCamera : MonoBehaviour
 {
+    [Header("Positioning")]
     [SerializeField] private GameObject target;
     [SerializeField] private GameObject rotationAnchorObject;
     [SerializeField] private Vector3 translationOffset;
@@ -11,6 +12,11 @@ public class GameCamera : MonoBehaviour
     [SerializeField] private float maxViewingAngle;
     [SerializeField] private float minViewingAngle;
     [SerializeField] private float rotationSensitivity;
+
+    [Header("Zooming")]
+    [SerializeField] private float zoomOutFOV;
+    [SerializeField] private float zoomInFOV;
+
 
     private float verticalRotationAngle;
 
@@ -41,5 +47,21 @@ public class GameCamera : MonoBehaviour
         verticalRotationAngle = Mathf.Clamp(verticalRotationAngle + Input.GetAxis("Mouse Y") * rotationSensitivity, minViewingAngle, maxViewingAngle);
 
         transform.RotateAround(rotationAnchorObject.transform.position, rotationAnchorObject.transform.right, -verticalRotationAngle);
+    }
+
+    public void ZoomIn()
+    {
+        GetComponent<Camera>().fieldOfView = zoomInFOV;
+    }
+
+    public void ZoomOut()
+    {
+        GetComponent<Camera>().fieldOfView = zoomOutFOV;
+    }
+
+    public void TriggerZoom()
+    {
+        if (Mathf.RoundToInt(GetComponent<Camera>().fieldOfView) == Mathf.RoundToInt(zoomInFOV)) ZoomOut();
+        else ZoomIn();
     }
 }

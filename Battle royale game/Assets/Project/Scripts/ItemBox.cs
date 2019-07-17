@@ -8,7 +8,8 @@ public class ItemBox : MonoBehaviour
     {
         Pistol,
         MachineGun,
-        Shotgun
+        Shotgun,
+        Sniper
     }
 
     [Header("Values")]

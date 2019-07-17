@@ -184,6 +184,12 @@ public class Player : MonoBehaviour
             hud.Tool = tool;
 
             if (currentObstacle != null) Destroy(currentObstacle);
+
+            //Zoom Out
+            if(!(weapon is Sniper))
+            {
+                gameCamera.ZoomOut();
+            }
         }
     }
 
@@ -195,7 +201,10 @@ public class Player : MonoBehaviour
         weapon = null;
         hud.UpdateWeapon(weapon);
 
-       // PlayerTool previousTool = tool;
+        // Zoom the camera out.
+            gameCamera.ZoomOut();
+
+        // PlayerTool previousTool = tool;
 
         //Cycle between the available tools.
         int currentToolIndex = (int)tool;
@@ -302,6 +311,7 @@ public class Player : MonoBehaviour
             if (type == ItemBox.ItemType.Pistol && weapons[i] is Pistol) currentweapon = weapons[i];
             else if (type == ItemBox.ItemType.MachineGun && weapons[i] is MachineGun) currentweapon = weapons[i];
             else if (type == ItemBox.ItemType.Shotgun && weapons[i] is Shotgun) currentweapon = weapons[i];
+            else if (type == ItemBox.ItemType.Sniper && weapons[i] is Sniper) currentweapon = weapons[i];
         }
 
         // if we dont have a weaoin of this type, Create one, and add it to the list
@@ -310,6 +320,7 @@ public class Player : MonoBehaviour
             if (type == ItemBox.ItemType.Pistol) currentweapon = new Pistol();
             else if (type == ItemBox.ItemType.MachineGun) currentweapon = new MachineGun();
             else if (type == ItemBox.ItemType.Shotgun) currentweapon = new Shotgun();
+            else if (type == ItemBox.ItemType.Sniper) currentweapon = new Sniper();
             weapons.Add(currentweapon);
         }
 
@@ -340,6 +351,16 @@ public class Player : MonoBehaviour
             {
                 Shoot();
             }
+
+            //Zoom logic
+            if(weapon is Sniper)
+            {
+                if(Input.GetMouseButtonDown(1))
+                {
+                    gameCamera.TriggerZoom();
+                } 
+               
+            }
         }
     }
     private void Shoot()
@@ -357,14 +378,15 @@ public class Player : MonoBehaviour
             if (Physics.Raycast(gameCamera.transform.position + (gameCamera.transform.forward * distanceFromCamera), gameCamera.transform.forward, out targetHit))
             {
                 Vector3 hitPosition = targetHit.point;
-                hitPosition = new Vector3
-               (
-                    hitPosition.x + Random.Range(-weapon.AimVariation, weapon.AimVariation),
-                    hitPosition.y + Random.Range(-weapon.AimVariation, weapon.AimVariation),
-                    hitPosition.z + Random.Range(-weapon.AimVariation, weapon.AimVariation)
-                    );
 
                 Vector3 shootDirection = (hitPosition - shootOrigin.transform.position).normalized;
+                shootDirection = new Vector3
+                    (
+                    shootDirection.x + Random.Range(-weapon.AimVariation, weapon.AimVariation),
+                    shootDirection.y + Random.Range(-weapon.AimVariation, weapon.AimVariation),
+                    shootDirection.z + Random.Range(-weapon.AimVariation, weapon.AimVariation)
+                    );
+                shootDirection.Normalize();
 
                 RaycastHit shootHit;
                 if (Physics.Raycast(shootOrigin.transform.position, shootDirection, out shootHit))
@@ -392,7 +414,9 @@ public class Player : MonoBehaviour
             if (Physics.Raycast(shootOrigin.transform.position, gameCamera.transform.forward, out targetHit))
             {
                 GameObject target = targetHit.transform.gameObject;
-                Debug.Log(target.name);
+                
+                //Just for testing
+                //Debug.Log(target.name);
             }
         }
     }

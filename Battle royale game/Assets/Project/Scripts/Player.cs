@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Player : MonoBehaviour, IDamageable
 {
@@ -459,11 +460,18 @@ public class Player : MonoBehaviour, IDamageable
                 health = 0;
                 Destroy(gameObject);
                 hud.ShowScreen("gameOver");
+
+                Invoke("ReloadGame", 3);
             }
 
             hud.Health = health;
         }
 
         return 0;
+    }
+
+    private void ReloadGame()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 }

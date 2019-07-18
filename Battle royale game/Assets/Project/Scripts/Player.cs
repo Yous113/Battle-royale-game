@@ -413,7 +413,7 @@ public class Player : MonoBehaviour
                         {
                             shootHit.transform.GetComponent<IDamageable>().Damage(weapon.Damage);
                         }
-                        if (shootHit.transform.GetComponentInParent<IDamageable>() != null)
+                        else if (shootHit.transform.GetComponentInParent<IDamageable>() != null)
                         {
                             shootHit.transform.GetComponentInParent<IDamageable>().Damage(weapon.Damage);
                         }

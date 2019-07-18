@@ -6,6 +6,7 @@ using UnityEngine.UI;
 public class HUDController : MonoBehaviour
 {
     [Header("Interface Elements")]
+    [SerializeField] private Text healthText;
     [SerializeField] private Text resourcesText;
     [SerializeField] private Text resourcesRequirementText;
     [SerializeField] private Text weaponNameText;
@@ -18,13 +19,18 @@ public class HUDController : MonoBehaviour
     [SerializeField] private GameObject toolContainer;
     [SerializeField] private float focusSmoothness;
 
-
     
 
 
     private float targetFocusX = 0;
 
-
+    public float Health
+    {
+        set
+        {
+            healthText.text = "Health: " + Mathf.CeilToInt(value);
+        }
+    }
 
     public int Resources {
         set

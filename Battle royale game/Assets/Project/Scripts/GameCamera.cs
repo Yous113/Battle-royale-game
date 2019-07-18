@@ -37,17 +37,20 @@ public class GameCamera : MonoBehaviour
 
     private void FixedUpdate()
     {
-        // Make the camera look at the target.
-        float yAngle = target.transform.eulerAngles.y;
-        Quaternion rotation = Quaternion.Euler(0, yAngle, 0);
+        if (target != null)
+        {
+            // Make the camera look at the target.
+            float yAngle = target.transform.eulerAngles.y;
+            Quaternion rotation = Quaternion.Euler(0, yAngle, 0);
 
-        transform.position = target.transform.position - (rotation * followOffset);
-        transform.LookAt(target.transform.position + translationOffset);
+            transform.position = target.transform.position - (rotation * followOffset);
+            transform.LookAt(target.transform.position + translationOffset);
 
-        // Make the camera look up or down.
-        verticalRotationAngle = Mathf.Clamp(verticalRotationAngle + Input.GetAxis("Mouse Y") * rotationSensitivity, minViewingAngle, maxViewingAngle);
+            // Make the camera look up or down.
+            verticalRotationAngle = Mathf.Clamp(verticalRotationAngle + Input.GetAxis("Mouse Y") * rotationSensitivity, minViewingAngle, maxViewingAngle);
 
-        transform.RotateAround(rotationAnchorObject.transform.position, rotationAnchorObject.transform.right, -verticalRotationAngle);
+            transform.RotateAround(rotationAnchorObject.transform.position, rotationAnchorObject.transform.right, -verticalRotationAngle);
+        }
     }
 
     public void ZoomIn()

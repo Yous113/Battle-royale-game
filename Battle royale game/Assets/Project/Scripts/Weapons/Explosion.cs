@@ -12,7 +12,14 @@ public class Explosion : MonoBehaviour
         RaycastHit[] hits = Physics.SphereCastAll(transform.position, range, transform.up);
         foreach (RaycastHit hit in hits)
         {
-            Debug.Log(hit.transform.name);
+            if (hit.transform.GetComponent<IDamageable>() != null)
+            {
+                hit.transform.GetComponent<IDamageable>().Damage(damage);
+            }
+            if(hit.transform.GetComponentInParent<IDamageable>() != null)
+            {
+                hit.transform.GetComponentInParent<IDamageable>().Damage(damage);
+            }
         }
 
         Destroy(gameObject, 0.5f);

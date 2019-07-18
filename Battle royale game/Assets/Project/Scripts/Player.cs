@@ -56,6 +56,7 @@ public class Player : MonoBehaviour
 
     private bool isUsingTools = true;
     private Weapon weapon;
+    private Vector3 shootDirection;
 
     // Start is called before the first frame update
     void Start()
@@ -405,7 +406,9 @@ public class Player : MonoBehaviour
                         Destroy(debugPositionInstance, 0.5f);
 
                         GameObject target = shootHit.transform.gameObject;
-                        Debug.Log(target.name);
+                        
+                        // Testing.
+                        //Debug.Log(target.name);
 
                         if (target.tag == "ObstacleShape")
                         {
@@ -417,19 +420,23 @@ public class Player : MonoBehaviour
                         Debug.DrawLine(shootOrigin.transform.position, shootOrigin.transform.position + shootDirection * 100, Color.red);
 #endif
                     }
+
+
+
+                    if (Physics.Raycast(shootOrigin.transform.position, gameCamera.transform.forward, out targetHit))
+                    {
+                        GameObject target = targetHit.transform.gameObject;
+
+                        //Just for testing
+                        //Debug.Log(target.name);
+                    }
                 }
-
-
-                if (Physics.Raycast(shootOrigin.transform.position, gameCamera.transform.forward, out targetHit))
+                else
                 {
-                    GameObject target = targetHit.transform.gameObject;
-
-                    //Just for testing
-                    //Debug.Log(target.name);
+                    GameObject rocket = Instantiate(rocketPrefab);
+                    rocket.transform.position = shootOrigin.transform.position + shootDirection;
+                    rocket.GetComponent<Rocket>().Shoot(shootDirection);
                 }
-            } else
-            {
-
             }
         }
     }

@@ -6087,7 +6087,7 @@ PrefabInstance:
     - target: {fileID: 850559341209656756, guid: 49a78485c8523674ca9d0053f05b31cd,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.006
+      value: -6.53
       objectReference: {fileID: 0}
     - target: {fileID: 850559341209656756, guid: 49a78485c8523674ca9d0053f05b31cd,
         type: 3}
@@ -6097,7 +6097,7 @@ PrefabInstance:
     - target: {fileID: 850559341209656756, guid: 49a78485c8523674ca9d0053f05b31cd,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 2.14
+      value: -12.12
       objectReference: {fileID: 0}
     - target: {fileID: 850559341209656756, guid: 49a78485c8523674ca9d0053f05b31cd,
         type: 3}
@@ -6138,6 +6138,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4941388070950178503, guid: 49a78485c8523674ca9d0053f05b31cd,
+        type: 3}
+      propertyPath: chasingSmoothness
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 4941388070950178503, guid: 49a78485c8523674ca9d0053f05b31cd,
+        type: 3}
+      propertyPath: distanceFromFloor
+      value: 2.5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 49a78485c8523674ca9d0053f05b31cd, type: 3}

@@ -7,7 +7,13 @@ public class Enemy : MonoBehaviour, IDamageable
     [SerializeField] private float health;
     [SerializeField] private float hitSmoothness;
 
+    protected Rigidbody enemyRigidbody;
     private float targetScale = 1f;
+
+     void Awake()
+    {
+        enemyRigidbody = transform.GetComponent<Rigidbody>();
+    }
 
     // Update is called once per frame
     void Update()

@@ -1,10 +1,12 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class Player : MonoBehaviour, IDamageable
 {
+    public delegate void DiedDelegate();
+    public event DiedDelegate OnPlayerDied;
+
     public enum PlayerTool
     {
         Pickaxe,
@@ -461,17 +463,15 @@ public class Player : MonoBehaviour, IDamageable
                 Destroy(gameObject);
                 hud.ShowScreen("gameOver");
 
-                Invoke("ReloadGame", 3);
+                if(OnPlayerDied != null)
+                {
+                    OnPlayerDied();
+                }
             }
 
             hud.Health = health;
         }
 
         return 0;
-    }
-
-    private void ReloadGame()
-    {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 }

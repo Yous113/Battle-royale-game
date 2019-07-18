@@ -13,6 +13,6 @@ public class MachineGun : Weapon
         isAutomatic = true;
         name = "Machine Gun";
         aimVariation = 0.04f;
-        damage = 2f;
+        damage = 3f;
     }
 }

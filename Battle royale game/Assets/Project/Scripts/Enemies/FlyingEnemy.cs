@@ -15,6 +15,10 @@ public class FlyingEnemy : Enemy
     [SerializeField] private float chasingSpeed;
     [SerializeField] private float chasingSmoothness;
 
+    [Header("Attacking")]
+    [SerializeField] private float attackingRange;
+    [SerializeField] private float bounceBackSpeed;
+
     private float bounceAngle;
     private Player target;
 
@@ -26,12 +30,14 @@ public class FlyingEnemy : Enemy
 
     // Update is called once per frame
     void Update()
+    {        
+        // Chase a player
+        Chase();
+    }
+     void FixedUpdate()
     {
         // Make the enemy fly
         Fly();
-
-        // Chase a player
-        Chase();
     }
 
     private void Fly()
@@ -58,6 +64,12 @@ public class FlyingEnemy : Enemy
                 targetPosition.y + offset,
                 targetPosition.z
                 );
+
+            // Move the enemy towards the target (if any)
+            if(target != null && Vector3.Distance(transform.position, target.transform.position) <= attackingRange)
+            {
+                targetPosition = new Vector3(targetPosition.x, target.transform.position.y + 1, targetPosition.z);
+            }
 
             // Apply the position
             transform.position = new Vector3
@@ -110,6 +122,16 @@ public class FlyingEnemy : Enemy
                 Mathf.Lerp(enemyRigidbody.velocity.y, targetVelocity.y, Time.deltaTime * chasingSmoothness),
                 Mathf.Lerp(enemyRigidbody.velocity.z, targetVelocity.z, Time.deltaTime * chasingSmoothness)
                 );
+        }
+    }
+    private void OnCollisionEnter(Collision collision)
+    {
+        if(collision.gameObject.GetComponent<IDamageable>() != null)
+        {
+            collision.gameObject.GetComponent<IDamageable>().Damage(damage);
+
+            Vector3 direction = (transform.position - collision.gameObject.transform.position).normalized;
+            enemyRigidbody.velocity = direction * bounceBackSpeed;
         }
     }
 }

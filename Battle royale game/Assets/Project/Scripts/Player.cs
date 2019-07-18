@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Player : MonoBehaviour
+public class Player : MonoBehaviour, IDamageable
 {
     public enum PlayerTool
     {
@@ -442,5 +442,12 @@ public class Player : MonoBehaviour
                 }
             }
         }
+    }
+
+    public int Damage(float amount)
+    {
+        Debug.Log(amount);
+
+            return 0;
     }
 }

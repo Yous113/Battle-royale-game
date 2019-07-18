@@ -4,8 +4,10 @@ using UnityEngine;
 
 public class Enemy : MonoBehaviour, IDamageable
 {
+    [Header("Enemy Script")]
     [SerializeField] private float health;
     [SerializeField] private float hitSmoothness;
+    [SerializeField] protected float damage;
 
     protected Rigidbody enemyRigidbody;
     private float targetScale = 1f;

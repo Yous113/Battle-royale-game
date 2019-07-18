@@ -9,7 +9,8 @@ public class ItemBox : MonoBehaviour
         Pistol,
         MachineGun,
         Shotgun,
-        Sniper
+        Sniper,
+        RocketLauncher
     }
 
     [Header("Values")]

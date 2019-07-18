@@ -41,6 +41,7 @@ public class Player : MonoBehaviour
 
     [Header("Weapons")]
     [SerializeField] private GameObject shootOrigin;
+    [SerializeField] private GameObject rocketPrefab;
 
     [Header("Debug")]
     [SerializeField] private GameObject DebugPositionPrefab;
@@ -314,6 +315,8 @@ public class Player : MonoBehaviour
             else if (type == ItemBox.ItemType.MachineGun && weapons[i] is MachineGun) currentweapon = weapons[i];
             else if (type == ItemBox.ItemType.Shotgun && weapons[i] is Shotgun) currentweapon = weapons[i];
             else if (type == ItemBox.ItemType.Sniper && weapons[i] is Sniper) currentweapon = weapons[i];
+            else if (type == ItemBox.ItemType.RocketLauncher && weapons[i] is RocketLauncher) currentweapon = weapons[i];
+
         }
 
         // if we dont have a weaoin of this type, Create one, and add it to the list
@@ -323,6 +326,7 @@ public class Player : MonoBehaviour
             else if (type == ItemBox.ItemType.MachineGun) currentweapon = new MachineGun();
             else if (type == ItemBox.ItemType.Shotgun) currentweapon = new Shotgun();
             else if (type == ItemBox.ItemType.Sniper) currentweapon = new Sniper();
+            else if (type == ItemBox.ItemType.RocketLauncher) currentweapon = new RocketLauncher();
             weapons.Add(currentweapon);
         }
 
@@ -391,35 +395,41 @@ public class Player : MonoBehaviour
                     );
                 shootDirection.Normalize();
 
-                RaycastHit shootHit;
-                if (Physics.Raycast(shootOrigin.transform.position, shootDirection, out shootHit))
+                if (!(weapon is RocketLauncher))
                 {
-                    GameObject debugPositionInstance = Instantiate(DebugPositionPrefab);
-                    debugPositionInstance.transform.position = shootHit.point;
-                    Destroy(debugPositionInstance, 0.5f);
-
-                    GameObject target = shootHit.transform.gameObject;
-                    Debug.Log(target.name);
-
-                    if (target.tag == "ObstacleShape")
+                    RaycastHit shootHit;
+                    if (Physics.Raycast(shootOrigin.transform.position, shootDirection, out shootHit))
                     {
-                        target.transform.parent.gameObject.GetComponent<Obstacle>().Hit();
-                    }
+                        GameObject debugPositionInstance = Instantiate(DebugPositionPrefab);
+                        debugPositionInstance.transform.position = shootHit.point;
+                        Destroy(debugPositionInstance, 0.5f);
+
+                        GameObject target = shootHit.transform.gameObject;
+                        Debug.Log(target.name);
+
+                        if (target.tag == "ObstacleShape")
+                        {
+                            target.transform.parent.gameObject.GetComponent<Obstacle>().Hit();
+                        }
 
 #if UNITY_EDITOR
-                    // Draw a line to show the shooting ray.
-                    Debug.DrawLine(shootOrigin.transform.position, shootOrigin.transform.position + shootDirection * 100, Color.red);
+                        // Draw a line to show the shooting ray.
+                        Debug.DrawLine(shootOrigin.transform.position, shootOrigin.transform.position + shootDirection * 100, Color.red);
 #endif
+                    }
                 }
-            }
 
 
-            if (Physics.Raycast(shootOrigin.transform.position, gameCamera.transform.forward, out targetHit))
+                if (Physics.Raycast(shootOrigin.transform.position, gameCamera.transform.forward, out targetHit))
+                {
+                    GameObject target = targetHit.transform.gameObject;
+
+                    //Just for testing
+                    //Debug.Log(target.name);
+                }
+            } else
             {
-                GameObject target = targetHit.transform.gameObject;
-                
-                //Just for testing
-                //Debug.Log(target.name);
+
             }
         }
     }

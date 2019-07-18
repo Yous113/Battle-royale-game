@@ -405,18 +405,17 @@ public class Player : MonoBehaviour
                         debugPositionInstance.transform.position = shootHit.point;
                         Destroy(debugPositionInstance, 0.5f);
 
-                        GameObject target = shootHit.transform.gameObject;
 
                         // Testing.
                         //Debug.Log(target.name);
 
-                        if (hit.transform.GetComponent<IDamageable>() != null)
+                        if (shootHit.transform.GetComponent<IDamageable>() != null)
                         {
-                            hit.transform.GetComponent<IDamageable>().Damage(damage);
+                            shootHit.transform.GetComponent<IDamageable>().Damage(weapon.Damage);
                         }
-                        if (hit.transform.GetComponentInParent<IDamageable>() != null)
+                        if (shootHit.transform.GetComponentInParent<IDamageable>() != null)
                         {
-                            hit.transform.GetComponentInParent<IDamageable>().Damage(damage);
+                            shootHit.transform.GetComponentInParent<IDamageable>().Damage(weapon.Damage);
                         }
 
 #if UNITY_EDITOR

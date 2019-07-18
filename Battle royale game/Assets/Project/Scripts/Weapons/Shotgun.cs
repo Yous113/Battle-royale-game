@@ -16,5 +16,6 @@ public class Shotgun : Weapon
         isAutomatic = false;
         name = "Shotgun";
         aimVariation = 0.08f;
+        damage = 4;
     }
 }

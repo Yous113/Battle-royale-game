@@ -12,5 +12,6 @@ public class Sniper : Weapon
         isAutomatic = false;
         name = "Sniper";
         aimVariation = 0.0f;
+        damage = 80f;
     }
 }

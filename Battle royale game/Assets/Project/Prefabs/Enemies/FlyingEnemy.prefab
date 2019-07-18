@@ -138,12 +138,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   health: 40
   hitSmoothness: 10
-  distanceFromFloor: 3
+  distanceFromFloor: 2.5
+  hoverSmoothness: 2
   bounceAmplitude: 0.3
   bounceSpeed: 5
   chasingRange: 20
-  chasingSpeed: 1
-  chasingSmoothness: 0
+  chasingSpeed: 2
+  chasingSmoothness: 0.5
 --- !u!54 &1269618710753191192
 Rigidbody:
   m_ObjectHideFlags: 0

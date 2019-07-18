@@ -6139,16 +6139,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 4941388070950178503, guid: 49a78485c8523674ca9d0053f05b31cd,
-        type: 3}
-      propertyPath: chasingSmoothness
-      value: 100
-      objectReference: {fileID: 0}
-    - target: {fileID: 4941388070950178503, guid: 49a78485c8523674ca9d0053f05b31cd,
-        type: 3}
-      propertyPath: distanceFromFloor
-      value: 2.5
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 49a78485c8523674ca9d0053f05b31cd, type: 3}
 --- !u!4 &550906416 stripped

@@ -6,6 +6,7 @@ public class FlyingEnemy : Enemy
 {
     [Header("Flying")]
     [SerializeField] private float distanceFromFloor;
+    [SerializeField] private float hoverSmoothness;
     [SerializeField] private float bounceAmplitude;
     [SerializeField] private float bounceSpeed;
 
@@ -59,7 +60,12 @@ public class FlyingEnemy : Enemy
                 );
 
             // Apply the position
-            transform.position = targetPosition;
+            transform.position = new Vector3
+                (
+                Mathf.Lerp(transform.position.x, targetPosition.x, Time.deltaTime * hoverSmoothness),
+                Mathf.Lerp(transform.position.y, targetPosition.y, Time.deltaTime * hoverSmoothness),
+                Mathf.Lerp(transform.position.z, targetPosition.z, Time.deltaTime * hoverSmoothness)
+                );
         }
     }
 
@@ -78,7 +84,12 @@ public class FlyingEnemy : Enemy
                     target = hit.transform.GetComponent<Player>();
                 }
             }            
+        }
 
+        // Check if target is too far away
+        if(target != null && Vector3.Distance(transform.position, target.transform.position) > chasingRange)
+        {
+            target = null;
         }
 
         // Chase the target (if any).

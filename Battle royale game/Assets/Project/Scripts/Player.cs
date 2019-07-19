@@ -1,8 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Networking;
 
-public class Player : MonoBehaviour, IDamageable
+public class Player : NetworkBehaviour, IDamageable
 {
     public delegate void DiedDelegate();
     public event DiedDelegate OnPlayerDied;
@@ -71,21 +72,24 @@ public class Player : MonoBehaviour, IDamageable
         health = 100;
         resources = initialResourceCount;
         weapons = new List<Weapon>();
+       
+        if (isLocalPlayer)
+        {
+            // Game camera
+            gameCamera = FindObjectOfType<GameCamera>();
+            obstaclePlacementContainer = gameCamera.ObstaclePlacementContainer;
+            gameCamera.Target = focalPoint;
+            gameCamera.RotationAnchorObject = rotationPoint;
 
-        // Game camera
-        gameCamera = FindObjectOfType<GameCamera>();
-        obstaclePlacementContainer = gameCamera.ObstaclePlacementContainer;
-        gameCamera.Target = focalPoint;
-        gameCamera.RotationAnchorObject = rotationPoint;
-
-        // HUD elements
-        hud = FindObjectOfType<HUDController>();
-        hud.ShowScreen("regular");
-        hud.Health = health;
-        hud.Resources = resources;
-        hud.Tool = tool;
-        hud.UpdateWeapon(null);
-
+            // HUD elements
+            hud = FindObjectOfType<HUDController>();
+            hud.ShowScreen("regular");
+            hud.Health = health;
+            hud.Resources = resources;
+            hud.Tool = tool;
+            hud.UpdateWeapon(null);
+        }
+        
         // Obstacle container
         obstacleContainer = GameObject.Find("ObstacleContainer");
 
@@ -94,6 +98,8 @@ public class Player : MonoBehaviour, IDamageable
     // Update is called once per frame
     void Update()
     {
+        if (!isLocalPlayer) return;
+
         // Update timers.
         resourceCollectionCooldownTimer -= Time.deltaTime;
 
@@ -309,6 +315,8 @@ public class Player : MonoBehaviour, IDamageable
 
     private void OnTriggerEnter(Collider otherCollider)
     {
+        if (!isLocalPlayer) return;
+
         if (otherCollider.gameObject.GetComponent<ItemBox>() != null)
         {
             ItemBox itemBox = otherCollider.gameObject.GetComponent<ItemBox>();

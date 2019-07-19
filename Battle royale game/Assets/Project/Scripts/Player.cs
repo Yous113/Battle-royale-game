@@ -18,17 +18,14 @@ public class Player : MonoBehaviour, IDamageable
 
     [Header("Focal Point variables")]
     [SerializeField] private GameObject focalPoint;
+    [SerializeField] private GameObject rotationPoint;
     [SerializeField] private float focalDistance;
     [SerializeField] private float focalSmoothness;
     [SerializeField] private KeyCode changeFocalSideKey;
 
     [Header("Interaction")]
-    [SerializeField] private GameCamera gameCamera;
     [SerializeField] private KeyCode interactionKey;
     [SerializeField] private float interactionDistance;
-
-    [Header("Interface")]
-    [SerializeField] private HUDController hud;
 
     [Header("Gameplay")]
     [SerializeField] private KeyCode toolSwitchKey;
@@ -38,8 +35,6 @@ public class Player : MonoBehaviour, IDamageable
 
 
     [Header("Obstacles")]
-    [SerializeField] private GameObject obstaclePlacementContainer;
-    [SerializeField] private GameObject obstacleContainer;
     [SerializeField] private GameObject[] obstaclePrefabs;
 
     [Header("Weapons")]
@@ -62,20 +57,37 @@ public class Player : MonoBehaviour, IDamageable
 
     private float health;
 
+    private HUDController hud;
+    private GameCamera gameCamera;
+    private GameObject obstaclePlacementContainer;
+    private GameObject obstacleContainer;
+
     // Start is called before the first frame update
     void Start()
     {
         Cursor.lockState = CursorLockMode.Locked;
 
+        // Initialize values
         health = 100;
-        hud.Health = health;
-
         resources = initialResourceCount;
+        weapons = new List<Weapon>();
+
+        // Game camera
+        gameCamera = FindObjectOfType<GameCamera>();
+        obstaclePlacementContainer = gameCamera.ObstaclePlacementContainer;
+        gameCamera.Target = focalPoint;
+        gameCamera.RotationAnchorObject = rotationPoint;
+
+        // HUD elements
+        hud = FindObjectOfType<HUDController>();
+        hud.ShowScreen("regular");
+        hud.Health = health;
         hud.Resources = resources;
         hud.Tool = tool;
         hud.UpdateWeapon(null);
 
-        weapons = new List<Weapon>();
+        // Obstacle container
+        obstacleContainer = GameObject.Find("ObstacleContainer");
 
     }
 

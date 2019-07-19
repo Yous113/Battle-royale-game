@@ -2843,7 +2843,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8053003483445723924}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 95.62, y: 0.2, z: -1.8570004}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -2950,19 +2950,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   focalPoint: {fileID: 8053003482883222423}
+  rotationPoint: {fileID: 8053003483736967105}
   focalDistance: 0.4
   focalSmoothness: 7.5
   changeFocalSideKey: 113
-  gameCamera: {fileID: 0}
   interactionKey: 101
   interactionDistance: 3
-  hud: {fileID: 0}
   toolSwitchKey: 9
   tool: 0
   initialResourceCount: 100
   resourceCollectionCooldown: 0.35
-  obstaclePlacementContainer: {fileID: 0}
-  obstacleContainer: {fileID: 0}
   obstaclePrefabs:
   - {fileID: 2451093995884410416, guid: df82ef9a42bc8da48a01d33e438f3c42, type: 3}
   - {fileID: 4196424408781872986, guid: 068da435bf322824a967cb50228c328a, type: 3}

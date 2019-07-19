@@ -5,13 +5,13 @@ using UnityEngine.SceneManagement;
 
 public class GameSceneController : MonoBehaviour
 {
-    [Header("Gameplay")]
-    [SerializeField] private Player player;
+    //[Header("Gameplay")]
+    //[SerializeField] private Player player;
     
     // Start is called before the first frame update
     void Start()
     {
-        player.OnPlayerDied += OnPlayerDied;
+        //player.OnPlayerDied += OnPlayerDied;
     }
 
     // Update is called once per frame

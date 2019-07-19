@@ -56,8 +56,7 @@ public class Player : MonoBehaviour, IDamageable
     private bool obstaclePlacementLock;
 
     private List<Weapon> weapons;
-
-    private bool isUsingTools = true;
+    
     private Weapon weapon;
     private Vector3 shootDirection;
 
@@ -183,9 +182,7 @@ public class Player : MonoBehaviour, IDamageable
     private void SwitchWeapon(int index)
     {
         if (index < weapons.Count)
-        {
-
-            isUsingTools = false;
+        {           
 
             weapon = weapons[index];
             hud.UpdateWeapon(weapon);
@@ -206,8 +203,6 @@ public class Player : MonoBehaviour, IDamageable
 
     private void SwitchTool()
         {
-
-        isUsingTools = true;
 
         weapon = null;
         hud.UpdateWeapon(weapon);

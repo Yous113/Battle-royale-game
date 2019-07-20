@@ -334,8 +334,14 @@ public class Player : NetworkBehaviour, IDamageable
 
             GiveItem(itemBox.Type, itemBox.Amount);
 
-            Destroy(otherCollider.gameObject);
+            CmdCollectBox(otherCollider.gameObject);
         }
+    }
+
+    [Command]
+    void CmdCollectBox(GameObject box)
+    {
+        Destroy(box);
     }
 
     private void GiveItem(ItemBox.ItemType type, int amount)

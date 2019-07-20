@@ -2323,7 +2323,7 @@ GameObject:
   - component: {fileID: 205594411}
   - component: {fileID: 205594410}
   m_Layer: 0
-  m_Name: MachineGun (1)
+  m_Name: 'MachineGun '
   m_TagString: Untagged
   m_Icon: {fileID: 2974397684917235467, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
@@ -4001,7 +4001,7 @@ GameObject:
   - component: {fileID: 389508768}
   - component: {fileID: 389508767}
   m_Layer: 0
-  m_Name: MachineGun (3)
+  m_Name: Pistol
   m_TagString: Untagged
   m_Icon: {fileID: 2974397684917235467, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
@@ -4066,7 +4066,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7b70f727e8e10a04b90db4ad9cfd333a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  prefab: {fileID: 512394816921320174, guid: 8ea67c4623ab5da4c969563dfcc7197c, type: 3}
+  prefab: {fileID: 512394816921320174, guid: 84aeb8b96f98e4a41b35a4a569c6fd4f, type: 3}
 --- !u!1 &391639258
 GameObject:
   m_ObjectHideFlags: 0
@@ -12144,6 +12144,15 @@ MonoBehaviour:
   - {fileID: 551149544638835314, guid: 4bee39073a6bd6944b7cd029dfec3d78, type: 3}
   - {fileID: 4196424408781872986, guid: 068da435bf322824a967cb50228c328a, type: 3}
   - {fileID: 214, guid: df82ef9a42bc8da48a01d33e438f3c42, type: 3}
+  - {fileID: 512394816921320174, guid: 8ea67c4623ab5da4c969563dfcc7197c, type: 3}
+  - {fileID: 512394816921320174, guid: 84aeb8b96f98e4a41b35a4a569c6fd4f, type: 3}
+  - {fileID: 512394816921320174, guid: af2099d48a48fc040857f0b38d94b6eb, type: 3}
+  - {fileID: 512394816921320174, guid: 23324076c31faa8468825f60c6b5039d, type: 3}
+  - {fileID: 512394816921320174, guid: 0e6dbc3ccaa4efe4b8158c627202321c, type: 3}
+  - {fileID: 5651658881639776236, guid: 320c1ce91b658af439561c4e057735c9, type: 3}
+  - {fileID: 5536683502989865244, guid: 20edb68ca58ec284fb4031f1e6ae987f, type: 3}
+  - {fileID: 850559341209656759, guid: 49a78485c8523674ca9d0053f05b31cd, type: 3}
+  - {fileID: 850559341209656759, guid: 118e23001f7939d4d81ef63f18c65764, type: 3}
   m_CustomConfig: 0
   m_MaxConnections: 4
   m_ConnectionConfig:
@@ -17291,7 +17300,7 @@ GameObject:
   - component: {fileID: 1745899861}
   - component: {fileID: 1745899860}
   m_Layer: 0
-  m_Name: MachineGun (2)
+  m_Name: Pistol
   m_TagString: Untagged
   m_Icon: {fileID: 2974397684917235467, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
@@ -17356,7 +17365,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7b70f727e8e10a04b90db4ad9cfd333a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  prefab: {fileID: 512394816921320174, guid: 8ea67c4623ab5da4c969563dfcc7197c, type: 3}
+  prefab: {fileID: 512394816921320174, guid: 84aeb8b96f98e4a41b35a4a569c6fd4f, type: 3}
 --- !u!1 &1748744083
 GameObject:
   m_ObjectHideFlags: 0

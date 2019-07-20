@@ -25,13 +25,7 @@ public class Obstacle : MonoBehaviour, IDamageable
     void Awake()
     {
         obstacleCollider = GetComponentInChildren<Collider>();
-
-        // Start with the the obstacle collider disabled
-        obstacleCollider.enabled = false;
-
-        // Transparency
         obstacleRenderer = GetComponentInChildren<Renderer>();
-        obstacleRenderer.material.color = new Color(1.0f, 1.0f, 1.0f, 0.5f);
     }
 
     // Update is called once per frame
@@ -43,6 +37,15 @@ public class Obstacle : MonoBehaviour, IDamageable
             Mathf.Lerp(transform.localScale.y, targetScale, hitSmoothness * Time.deltaTime),
             Mathf.Lerp(transform.localScale.z, targetScale, hitSmoothness * Time.deltaTime)
             );
+    }
+
+    public void SetPositioningMode()
+    {
+        // Start with the the obstacle collider disabled
+        obstacleCollider.enabled = false;
+
+        // Make the obstacle transparent.
+        obstacleRenderer.material.color = new Color(1.0f, 1.0f, 1.0f, 0.5f);
     }
 
     public void Place()

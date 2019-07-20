@@ -62,6 +62,7 @@ public class Player : NetworkBehaviour, IDamageable
     private GameCamera gameCamera;
     private GameObject obstaclePlacementContainer;
     private GameObject obstacleContainer;
+    private int obstacleToAddIndex;
 
     // Start is called before the first frame update
     void Start()
@@ -244,7 +245,7 @@ public class Player : NetworkBehaviour, IDamageable
         hud.Tool = tool;
 
         // Check for obstacle placement logic
-        int obstacleToAddIndex = -1;
+        obstacleToAddIndex = -1;
         if (tool == PlayerTool.ObstacleVertical)
         {
             obstacleToAddIndex = 0;
@@ -266,6 +267,8 @@ public class Player : NetworkBehaviour, IDamageable
 
             currentObstacle.transform.localPosition = Vector3.zero;
             currentObstacle.transform.localRotation = Quaternion.identity;
+
+            currentObstacle.GetComponent<Obstacle>().SetPositioningMode();
 
             hud.UpdateResourcesRequirement(currentObstacle.GetComponent<Obstacle>().Cost, resources);
 
@@ -305,13 +308,21 @@ public class Player : NetworkBehaviour, IDamageable
                 hud.Resources = resources;
                 hud.UpdateResourcesRequirement(cost, resources);
 
-                GameObject newObstacle = Instantiate(currentObstacle);
-                newObstacle.transform.SetParent(obstacleContainer.transform);
-                newObstacle.transform.position = currentObstacle.transform.position;
-                newObstacle.transform.rotation = currentObstacle.transform.rotation;
-                newObstacle.GetComponent<Obstacle>().Place();
+                CmdPlaceObstacle(obstacleToAddIndex, currentObstacle.transform.position, currentObstacle.transform.rotation);
             }
         }
+
+    [Command]
+    void CmdPlaceObstacle (int index, Vector3 position, Quaternion rotation)
+    {
+        GameObject newObstacle = Instantiate(obstaclePrefabs[index]);
+        newObstacle.transform.SetParent(obstacleContainer.transform);
+        newObstacle.transform.position = position;
+        newObstacle.transform.rotation = rotation;
+        newObstacle.GetComponent<Obstacle>().Place();
+
+        NetworkServer.Spawn(newObstacle);
+    }
 
     private void OnTriggerEnter(Collider otherCollider)
     {

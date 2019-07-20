@@ -56,13 +56,12 @@ public class Player : NetworkBehaviour, IDamageable
     private Weapon weapon;
     private Vector3 shootDirection;
 
-    private float health;
-
     private HUDController hud;
     private GameCamera gameCamera;
     private GameObject obstaclePlacementContainer;
     private GameObject obstacleContainer;
     private int obstacleToAddIndex;
+    private Health health;
 
     // Start is called before the first frame update
     void Start()
@@ -70,9 +69,10 @@ public class Player : NetworkBehaviour, IDamageable
         Cursor.lockState = CursorLockMode.Locked;
 
         // Initialize values
-        health = 100;
         resources = initialResourceCount;
         weapons = new List<Weapon>();
+        GetComponent<Health>();
+        health.OnHealthChanged += OnHealthChanged;
        
         if (isLocalPlayer)
         {
@@ -85,7 +85,7 @@ public class Player : NetworkBehaviour, IDamageable
             // HUD elements
             hud = FindObjectOfType<HUDController>();
             hud.ShowScreen("regular");
-            hud.Health = health;
+            hud.Health = health.Value;
             hud.Resources = resources;
             hud.Tool = tool;
             hud.UpdateWeapon(null);
@@ -447,15 +447,15 @@ public class Player : NetworkBehaviour, IDamageable
 
 
                         // Testing.
-                        //Debug.Log(target.name);
+                        // Debug.Log(target.name);
 
                         if (shootHit.transform.GetComponent<IDamageable>() != null)
                         {
-                            shootHit.transform.GetComponent<IDamageable>().Damage(weapon.Damage);
+                            CmdDamage(shootHit.transform.gameObject, weapon.Damage);;
                         }
                         else if (shootHit.transform.GetComponentInParent<IDamageable>() != null)
                         {
-                            shootHit.transform.GetComponentInParent<IDamageable>().Damage(weapon.Damage);
+                            CmdDamage(shootHit.transform.parent.gameObject, weapon.Damage);
                         }
 
 #if UNITY_EDITOR
@@ -484,26 +484,24 @@ public class Player : NetworkBehaviour, IDamageable
         }
     }
 
+    [Command]
+    private void CmdDamage (GameObject target, float damage)
+    {
+        target.GetComponent<IDamageable>().Damage(damage);
+    }
+
     public int Damage(float amount)
     {
-        if (health > 0)
-        {
-            health -= amount;
-            if (health <= 0)
-            {
-                health = 0;
-                Destroy(gameObject);
-                hud.ShowScreen("gameOver");
-
-                if(OnPlayerDied != null)
-                {
-                    OnPlayerDied();
-                }
-            }
-
-            hud.Health = health;
-        }
-
+        GetComponent<Health>().Damage(amount);
         return 0;
+    }
+
+    private void OnHealthChanged (float newHealth)
+    {
+        hud.Health = newHealth;
+        if(newHealth < 0.01f)
+        {
+            Destroy(gameObject);
+        }
     }
 }

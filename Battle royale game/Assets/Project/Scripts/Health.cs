@@ -15,7 +15,7 @@ public class Health : NetworkBehaviour
     private float health = defaultHealth;
 
     // Properties
-    public float Value { get { return health; } }
+    public float Value { get { return health; } set { health = value; } }
 
     public void Damage (float amount)
     {
@@ -27,7 +27,7 @@ public class Health : NetworkBehaviour
     {
         if (OnHealthChanged != null)
         {
-            OnHealthChanged(health);
+            OnHealthChanged(newHealth);
         }
     }
 }

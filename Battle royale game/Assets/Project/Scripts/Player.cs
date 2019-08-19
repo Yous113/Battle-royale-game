@@ -72,7 +72,7 @@ public class Player : NetworkBehaviour, IDamageable
         resources = initialResourceCount;
         weapons = new List<Weapon>();
         GetComponent<Health>();
-        health.OnHealthChanged += OnHealthChanged;
+       // health.OnHealthChanged += OnHealthChanged;
        
         if (isLocalPlayer)
         {
@@ -118,7 +118,7 @@ public class Player : NetworkBehaviour, IDamageable
         // Interaction logic.
 #if UNITY_EDITOR
         // Draw interaction line
-        Debug.DrawLine(gameCamera.transform.position, gameCamera.transform.position + gameCamera.transform.forward * interactionDistance, Color.blue);
+        //Debug.DrawLine(gameCamera.transform.position, gameCamera.transform.position + gameCamera.transform.forward * interactionDistance, Color.blue);
 #endif
         if (Input.GetKeyDown(interactionKey))
         {
